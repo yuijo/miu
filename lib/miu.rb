@@ -1,5 +1,10 @@
-require "miu/version"
+require 'miu/version'
+require 'pathname'
 
 module Miu
-  # Your code goes here...
+  class << self
+    def root
+      Pathname.new(File.expand_path('../../', __FILE__))
+    end
+  end
 end
