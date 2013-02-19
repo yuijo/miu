@@ -1,4 +1,5 @@
 require 'miu/store/base'
+require 'msgpack/rpc'
 
 module Miu
   module Store

@@ -1,5 +1,3 @@
-require 'msgpack/rpc'
-
 module Miu
   module Store
     class Base
