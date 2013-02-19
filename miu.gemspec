@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Miu::VERSION
   gem.authors       = ["mashiro"]
   gem.email         = ["mail@mashiro.org"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{miu miu}
+  gem.summary       = %q{miu miu}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
@@ -20,7 +20,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'thor'
   gem.add_dependency 'foreman'
   gem.add_dependency 'fluentd'
-  gem.add_dependency 'rroonga'
   gem.add_dependency 'msgpack'
   gem.add_dependency 'msgpack-rpc'
+
+  gem.add_development_dependency 'rake'
 end

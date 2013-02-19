@@ -1,4 +1,5 @@
 require 'miu/version'
+require 'miu/store'
 require 'pathname'
 
 module Miu

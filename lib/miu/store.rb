@@ -1,19 +1,25 @@
-require 'miu/store/base'
 require 'msgpack/rpc'
 
 module Miu
   module Store
     class << self
+      def strategies
+        @@strategies ||= {}
+      end
+
+      def register(name, type)
+        strategies[name.to_sym] = type
+      end
+
       def start(options = {})
         address = options[:address]
         port = options[:port]
         type = options[:type]
 
-        require "miu/store/#{type}"
-        store_class = const_get(camelize(type))
+        klass = Miu::Store.strategies[type.to_sym]
 
         server = MessagePack::RPC::Server.new
-        server.listen address, port, store_class.new(options)
+        server.listen address, port, klass.new(options)
 
         [:TERM, :INT].each do |sig|
           Signal.trap(sig) { server.stop }
@@ -21,12 +27,8 @@ module Miu
 
         server.run
       end
-
-      private
-
-      def camelize(term)
-        term.to_s.sub(/^[a-z\d]*/) { $&.capitalize }.gsub(/(?:_|(\/))([a-z\d]*)/i) { "#{$1}#{$2.capitalize}" }
-      end
     end
   end
 end
+
+require 'miu/store/strategies/null'
