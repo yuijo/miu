@@ -18,9 +18,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency 'thor'
-  gem.add_dependency 'foreman'
+  gem.add_dependency 'god'
   gem.add_dependency 'fluentd'
-  gem.add_dependency 'msgpack'
   gem.add_dependency 'msgpack-rpc'
 
   gem.add_development_dependency 'rake'
