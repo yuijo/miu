@@ -1,6 +1,4 @@
 #!/usr/bin/env ruby
 # -*- encoding: utf-8 -*-
 require 'miu/cli'
-require 'miu/store/cli'
-
 Miu::CLI.start
