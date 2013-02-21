@@ -6,6 +6,16 @@ module Miu
     include ::Thor::Actions
     add_runtime_options!
 
+    class << self
+      def source_root
+        File.expand_path('../../templates', __FILE__)
+      end
+
+      def destination_root
+        Miu.root
+      end
+    end
+
     map ['--version', '-v'] => :version
 
     desc 'version', 'Show version'
@@ -24,32 +34,10 @@ module Miu
 
     desc 'init', 'Generates a miu configuration files'
     def init
-      empty_directory 'config'
+      copy_file 'Gemfile'
+      directory 'config'
       empty_directory 'log'
       empty_directory 'tmp/pids'
-
-      create_file 'config/miu.god', <<-CONF
-# vim: ft=ruby
-require 'miu'
-
-God.port = 30300
-God.pid_file_directory = Miu.root.join('tmp/pids')
-
-God.watch do |w|
-  w.dir = Miu.root
-  w.log = Miu.root.join('log/fluentd.log')
-  w.name = 'fluentd'
-  w.start = 'bundle exec fluentd -c config/fluent.conf'
-  w.keepalive
-end
-      CONF
-      create_file 'config/fluent.conf', <<-CONF
-# built-in TCP input
-# $ echo <json> | fluent-cat <tag>
-<source>
-  type forward
-</source>
-      CONF
     end
   end
 end

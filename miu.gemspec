@@ -17,6 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
+  gem.add_dependency 'bundler'
   gem.add_dependency 'thor'
   gem.add_dependency 'god'
   gem.add_dependency 'fluentd'
