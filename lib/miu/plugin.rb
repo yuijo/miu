@@ -29,6 +29,7 @@ module Miu
 
       def generate_subcommand(name, plugin, &block)
         require 'thor'
+        require 'thor/group'
         Class.new ::Thor do
           include ::Thor::Actions
           add_runtime_options!
