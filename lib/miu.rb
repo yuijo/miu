@@ -22,9 +22,9 @@ module Miu
     def find_root(flag, base = nil)
       require 'pathname'
       path = base || Dir.pwd
-      while path && File.directory?(path) && File.exist?("#{path}/#{flag}")
+      while path && File.directory?(path) && !File.exist?("#{path}/#{flag}")
         parent = File.dirname path
-        path = path != parent && path
+        path = path != parent && parent
       end
       raise 'Could not find root path' unless path
       Pathname.new File.realpath(path)
