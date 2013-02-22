@@ -5,6 +5,8 @@ module Miu
     class Null
       include Miu::Plugin
 
+      DEFAULT_PORT = Miu.default_port + 10
+
       class Handler
         def log(tag, time, record)
         end
@@ -25,29 +27,29 @@ module Miu
       register :null, :desc => 'Null plugin' do
         desc 'start', 'start null'
         option :bind, :type => :string, :default => '0.0.0.0', :desc => 'bind address', :aliases => '-a'
-        option :port, :type => :numeric, :default => 30301, :desc => 'listen port', :aliases => '-p'
+        option :port, :type => :numeric, :default => DEFAULT_PORT, :desc => 'listen port', :aliases => '-p'
         def start
           Null.new options
         end
 
         desc 'init', 'init null config'
         def init
-          append_to_file 'config/miu.god', <<-CONF
+          append_to_file Miu.default_god_config, <<-CONF
 
 God.watch do |w|
   w.dir = Miu.root
-  w.log = Miu.root.join('log', 'null.log')
+  w.log = Miu.root.join('log/null.log')
   w.name = 'null'
   w.start = 'bundle exec miu null start'
 end
           CONF
-          append_to_file 'config/fluent.conf', <<-CONF
+          append_to_file Miu.default_fluent_config, <<-CONF
 
 # miu null output plugin
 <match miu.output.null>
   type msgpack_rpc
   host localhost
-  port 30301
+  port #{DEFAULT_PORT}
 </match>
           CONF
         end

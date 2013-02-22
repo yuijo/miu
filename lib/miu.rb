@@ -6,6 +6,26 @@ module Miu
       @root ||= find_root 'Gemfile'
     end
 
+    def default_port
+      22200
+    end
+
+    def default_god_config
+      'config/miu.god'
+    end
+
+    def default_god_port
+      default_port + 0
+    end
+
+    def default_fluent_config
+      'config/fluent.conf'
+    end
+
+    def default_fluent_port
+      default_port + 1
+    end
+
     def plugins
       @plugins ||= {}
     end
