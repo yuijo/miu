@@ -43,9 +43,14 @@ module Miu
       empty_directory 'tmp/pids'
     end
 
+    desc 'start', 'Start miu'
+    def start
+      run "bundle exec god -c #{Miu.default_god_config}"
+    end
+
     desc 'god', 'Miu is a god'
     def god(*args)
-      args.unshift "bundle exec god -c #{Miu.default_god_config} -p #{Miu.default_god_port}"
+      args.unshift "bundle exec god -p #{Miu.default_god_port}"
       run args.join(' ')
     end
   end
