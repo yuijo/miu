@@ -3,6 +3,9 @@ require 'miu'
 module Miu
   module Plugin
     def self.included(base)
+      STDOUT.sync = true
+      STDERR.sync = true
+
       base.extend ClassMethods
       base.called_from = begin
         call_stack = caller.map { |p| p.sub(/:\d+.*/, '') }
