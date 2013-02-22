@@ -35,7 +35,10 @@ module Miu
     desc 'init', 'Generates a miu configuration files'
     def init
       copy_file 'Gemfile'
-      directory 'config'
+      inside 'config' do
+        template 'fluent.conf'
+        template 'miu.god'
+      end
       empty_directory 'log'
       empty_directory 'tmp/pids'
     end
