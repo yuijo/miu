@@ -45,11 +45,13 @@ module Miu
 
     desc 'start', 'Start miu'
     def start
+      require 'god'
       run "bundle exec god -c #{Miu.default_god_config}"
     end
 
     desc 'god', 'Miu is a god'
     def god(*args)
+      require 'god'
       args.unshift "bundle exec god -p #{Miu.default_god_port}"
       run args.join(' ')
     end
