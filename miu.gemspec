@@ -17,9 +17,9 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'bundler'
-  gem.add_dependency 'thor'
-  gem.add_dependency 'saorin'
+  gem.add_dependency 'bundler', '>= 1.2.0'
+  gem.add_dependency 'thor', '>= 0.17.0'
+  gem.add_dependency 'saorin', '>= 0.2.0'
 
-  gem.add_development_dependency 'rake'
+  gem.add_development_dependency 'rake', '>= 10.0.3'
 end
