@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 group :assets do
   gem 'god'
-  gem 'fluentd'
 end
 
 gem 'miu'
+
