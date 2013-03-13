@@ -1,6 +1,12 @@
 require 'miu/version'
 
 module Miu
+  autoload :CLI, 'miu/cli'
+  autoload :Command, 'miu/command'
+  autoload :Server, 'miu/server'
+  autoload :Pusher, 'miu/pusher'
+  autoload :Subscriber, 'miu/subscriber'
+
   class << self
     def root
       @root ||= find_root 'Gemfile'
@@ -10,33 +16,20 @@ module Miu
       22200
     end
 
-    def default_rpc_port
+    def default_god_port
       default_port
     end
 
-    def default_god_port
+    def default_pull_port
       default_port + 1
+    end
+
+    def default_pub_port
+      default_port + 2
     end
 
     def default_god_config
       'config/miu.god'
-    end
-
-    def default_fluent_config
-      'config/fluent.conf'
-    end
-
-    def plugins
-      @plugins ||= {}
-    end
-
-    def register(name, plugin, options = {}, &block)
-      name = name.to_s
-      usage = options[:usage] || "#{name} [COMMAND]"
-      desc = options[:desc] || plugin.to_s
-
-      plugins[name] = plugin
-      Miu::CLI.register generate_subcommand(name, plugin, &block), name, usage, desc if block
     end
 
     def find_root(flag, base = nil)
@@ -48,6 +41,20 @@ module Miu
       end
       raise 'Could not find root path' unless path
       Pathname.new File.realpath(path)
+    end
+
+    def plugins
+      @plugins ||= {}
+    end
+
+    def register(name, plugin, options = {}, &block)
+      Miu.plugins[name] = plugin
+      if block
+        usage = options[:usage] || "#{name} [COMMAND]"
+        desc = options[:desc] || plugin.to_s
+        command = Miu::Command.new name, plugin, &block
+        Miu::CLI.register command, name, usage, desc
+      end
     end
   end
 end

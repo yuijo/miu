@@ -1,2 +1,4 @@
-require 'miu/plugins/null'
-
+module Miu
+  module Plugins
+  end
+end

@@ -1,5 +1,5 @@
-require 'thor'
 require 'miu'
+require 'thor'
 
 module Miu
   class CLI < ::Thor
@@ -23,28 +23,39 @@ module Miu
       say "Miu #{Miu::VERSION}"
     end
 
-    desc 'list', 'Lists plugins'
-    def list
-      table = Miu.plugins.map { |k, v| [k, "# #{v}" ] }
-
-      say 'Plugins:'
-      print_table table, :indent => 2, :truncate => true
-      say
-    end
-
     desc 'init', 'Generates a miu configuration files'
     def init
       copy_file 'Gemfile'
       inside 'config' do
-        template 'fluent.conf'
         template 'miu.god'
       end
       empty_directory 'log'
       empty_directory 'tmp/pids'
     end
 
+    desc 'list', 'Lists plugins'
+    def list
+      require 'miu/plugins'
+      table = Miu.plugins.map { |k, v| [k, "# #{v}" ] }
+      say 'Plugins:'
+      print_table table, :indent => 2, :truncate => true
+      say
+    end
+
     desc 'start', 'Start miu'
+    option 'pull-host', :type => :string, :default => '127.0.0.1', :desc => 'pull host address'
+    option 'pull-port', :type => :numeric, :default => Miu.default_pull_port, :desc => 'pull listen port'
+    option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'pub host address'
+    option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub listen port'
     def start
+      opts = options.dup
+      opts.keys.each { |k| opts[k.gsub('-', '_')] = opts.delete(k) if k.is_a?(::String) }
+      server = Miu::Server.new opts
+      server.run
+    end
+
+    desc 'supervise', 'Supervise miu and plugins'
+    def supervise
       require 'god'
       run "bundle exec god -c #{Miu.default_god_config}"
     end
@@ -57,7 +68,3 @@ module Miu
     end
   end
 end
-
-# load built-in plugins
-require 'miu/plugins'
-

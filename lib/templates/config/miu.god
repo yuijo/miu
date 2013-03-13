@@ -6,8 +6,8 @@ God.pid_file_directory = Miu.root.join('tmp/pids')
 
 God.watch do |w|
   w.dir = Miu.root
-  w.log = Miu.root.join('log/fluentd.log')
-  w.name = 'fluentd'
-  w.start = "bundle exec fluentd -c #{Miu.default_fluent_config}"
+  w.log = Miu.root.join('log/miu.log')
+  w.name = 'miu'
+  w.start = 'bundle exec miu start'
   w.keepalive
 end
