@@ -19,7 +19,7 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'bundler', '>= 1.2.0'
   gem.add_dependency 'thor', '>= 0.17.0'
-  gem.add_dependency 'ffi-rzmq'
+  gem.add_dependency 'ffi-rzmq', '>= 1.0.0'
   gem.add_dependency 'msgpack', '>= 0.5.3'
   gem.add_development_dependency 'rake', '>= 10.0.3'
 end
