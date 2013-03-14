@@ -1,46 +1,55 @@
 require 'miu'
-require 'zmq'
+require 'miu/publisher'
+require 'miu/subscriber'
 
 module Miu
   class Server
     attr_reader :options
-    attr_reader :context, :pull_socket, :sub_socket
+    attr_reader :context, :publisher, :subscriber
 
     def initialize(options = {})
       @options = options
     end
 
     def run
-      pull_address = "#{@options[:pull_host]}:#{@options[:pull_port]}"
       pub_address = "#{@options[:pub_host]}:#{@options[:pub_port]}"
+      sub_address = "#{@options[:sub_host]}:#{@options[:sub_port]}"
 
       @context = ZMQ::Context.new
-      @pull_socket = @context.socket ZMQ::PULL
-      @pull_socket.bind "tcp://#{pull_address}"
-      @pub_socket = @context.socket ZMQ::PUB
-      @pub_socket.bind "tcp://#{pub_address}"
+      @publisher = Publisher.new({
+        :context => @context,
+        :host => @options[:pub_host],
+        :port => @options[:pub_port]
+      })
+      @subscriber = Subscriber.new({
+        :context => @context,
+        :host => @options[:sub_host],
+        :port => @options[:sub_port]
+      })
+
+      @publisher.bind
+      @subscriber.bind
 
       puts "Starting miu"
-      puts "pull: #{pull_address}"
-      puts "pub: #{pub_address}"
+      puts "pub: #{@publisher.host}:#{@publisher.port}"
+      puts "sub: #{@subscriber.host}:#{@subscriber.port}"
 
       trap(:INT) do
-        puts "Quit..."
-        shutdown
+        puts "Quit"
+        close
         exit
       end
 
       loop do
-        msg = @pull_socket.recv
-        p msg
-        @pub_socket.send msg
+        @subscriber.forward @publisher
       end
     end
 
-    def shutdown
-      @pub_socket.close
-      @pull_socket.close
-      @context.close
+    def close
+      @subscriber.close
+      @publisher.close
+      @context.terminate
     end
+    alias_method :shutdown, :close
   end
 end

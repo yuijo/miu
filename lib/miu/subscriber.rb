@@ -1,45 +1,49 @@
 require 'miu'
-require 'zmq'
-require 'msgpack'
+require 'miu/socket'
 
 module Miu
-  class Subscriber
-    attr_reader :host, :port
-    attr_reader :context, :socket
-    attr_reader :tag
+  class Subscriber < Socket
+    attr_reader :subscribe
 
-    def initialize(host = nil, port = nil, options = {})
-      @host = host || '127.0.0.1'
-      @port = port || Miu.default_pub_port
-      @context = options[:context] || ZMQ::Context.new(options[:io_threads] || 1)
-      @socket = @context.socket ZMQ::SUB
-      @socket.connect "tcp://#{@host}:#{@port}"
-      tag = options[:tag]
+    def initialize(options = {})
+      options[:port] ||= Miu.default_pub_port
+      super socket_type, options
+
+      self.subscribe = options[:subscribe]
+      yield self if block_given?
     end
 
-    def close(close_context = true)
-      @socket.close
-      @context.close if close_context
+    def subscribe
+      @subscribe
     end
 
-    def tag
-      @tag
-    end
-
-    def tag=(value)
-      @tag = value.to_s
-      @socket.setsockopt ZMQ::SUBSCRIBE, @tag
+    def subscribe=(value)
+      @subscribe = value.to_s
+      @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
     end
 
     def recv
-      data = @socket.recv
-      MessagePack.unpack(data)
+      parts = []
+      @socket.recv_strings parts
+      Message.load parts
     end
 
-    def each(&block)
-      loop do
-        msg = recv rescue nil
-        block.call msg if block && msg
+    def each
+      if block_given?
+        loop do
+          message = recv rescue nil
+          yield message if message
+        end
+      end
+    end
+
+    private
+
+    def socket_type
+      if ZMQ::LibZMQ.version3?
+        ZMQ::XSUB
+      else
+        ZMQ::SUB
       end
     end
   end

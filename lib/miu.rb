@@ -4,7 +4,9 @@ module Miu
   autoload :CLI, 'miu/cli'
   autoload :Command, 'miu/command'
   autoload :Server, 'miu/server'
-  autoload :Pusher, 'miu/pusher'
+  autoload :Message, 'miu/message'
+  autoload :Socket, 'miu/socket'
+  autoload :Publisher, 'miu/publisher'
   autoload :Subscriber, 'miu/subscriber'
 
   class << self
@@ -20,11 +22,11 @@ module Miu
       default_port
     end
 
-    def default_pull_port
+    def default_pub_port
       default_port + 1
     end
 
-    def default_pub_port
+    def default_sub_port
       default_port + 2
     end
 

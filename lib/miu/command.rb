@@ -2,7 +2,7 @@ require 'miu'
 
 module Miu
   class Command
-    def self.new(options = {}, &block)
+    def self.new(name, plugin, options = {}, &block)
       require 'thor'
       Class.new ::Thor do
         include ::Thor::Actions
