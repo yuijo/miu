@@ -9,17 +9,26 @@ module Miu
       options[:port] ||= Miu.default_pub_port
       super socket_type, options
 
-      self.subscribe = options[:subscribe]
+      subscribe options[:subscribe] || ''
       yield self if block_given?
     end
 
-    def subscribe
-      @subscribe
+    def subscribe(value = nil)
+      if value
+        unsubscribe if @subscribe
+        @subscribe = value.to_s
+        @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
+      else
+        @subscribe
+      end
     end
 
-    def subscribe=(value)
-      @subscribe = value.to_s
-      @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
+    def unsubscribe
+      if @subscribe
+        @socket.setsockopt ZMQ::UNSUBSCRIBE, @subscribe
+        @subscribe = nil
+      end
+      nil
     end
 
     def recv
