@@ -22,11 +22,15 @@ module Miu
     end
 
     def bind
-      @socket.bind "tcp://#{@host}:#{@port}"
+      rc = @socket.bind "tcp://#{@host}:#{@port}"
+      error_check rc
+      self
     end
 
     def connect
-      @socket.connect "tcp://#{@host}:#{@port}"
+      rc = @socket.connect "tcp://#{@host}:#{@port}"
+      error_check rc
+      self
     end
 
     def forward(forwarder)
@@ -42,6 +46,15 @@ module Miu
     def close
       @socket.close
       @context.terminate if @terminate_context
+    end
+
+    protected
+
+    def error_check(rc, source = nil)
+      unless ZMQ::Util.resultcode_ok? rc
+        raise ZMQ::ZeroMQError.new source, rc, ZMQ::Util.errno, ZMQ::Util.error_string
+      end
+      true
     end
   end
 end
