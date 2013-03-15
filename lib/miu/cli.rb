@@ -54,6 +54,17 @@ module Miu
       server.run
     end
 
+    desc 'cat tag [body]', 'Nyan'
+    option 'host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
+    option 'port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu sub port'
+    def cat(tag, body = nil)
+      require 'json'
+      publisher = Miu::Publisher.new :host => options[:host], :port => options[:port]
+      publisher.connect
+      body = JSON.load(body) rescue body
+      publisher.send tag, body
+    end
+
     desc 'supervise', 'Supervise miu and plugins'
     def supervise
       require 'god'
