@@ -43,10 +43,10 @@ module Miu
     end
 
     desc 'start', 'Start miu'
-    option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'pub host address'
-    option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub listen port'
-    option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'sub host address'
-    option 'sub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'sub listen port'
+    option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'pub host'
+    option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub port'
+    option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'sub host'
+    option 'sub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'sub port'
     def start
       opts = options.dup
       opts.keys.each { |k| opts[k.gsub('-', '_')] = opts.delete(k) if k.is_a?(::String) }
