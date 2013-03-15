@@ -1,7 +1,7 @@
 require 'msgpack'
 
 module Miu
-  class Message
+  class Packet
     attr_accessor :tag, :time, :body
 
     def initialize(*args)

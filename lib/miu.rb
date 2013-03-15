@@ -4,7 +4,7 @@ module Miu
   autoload :CLI, 'miu/cli'
   autoload :Command, 'miu/command'
   autoload :Server, 'miu/server'
-  autoload :Message, 'miu/message'
+  autoload :Packet, 'miu/packet'
   autoload :Socket, 'miu/socket'
   autoload :Publisher, 'miu/publisher'
   autoload :Subscriber, 'miu/subscriber'

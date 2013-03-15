@@ -1,5 +1,6 @@
 require 'miu'
 require 'miu/socket'
+require 'miu/packet'
 
 module Miu
   class Subscriber < Socket
@@ -34,14 +35,14 @@ module Miu
     def recv
       parts = []
       @socket.recv_strings parts
-      Message.load parts
+      Packet.load parts
     end
 
     def each
       if block_given?
         loop do
-          message = recv rescue nil
-          yield message if message
+          packet = recv rescue nil
+          yield packet if packet
         end
       end
     end
