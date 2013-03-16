@@ -1,6 +1,5 @@
 require 'miu'
-require 'miu/publisher'
-require 'miu/subscriber'
+require 'ffi-rzmq'
 
 module Miu
   class Server

@@ -49,9 +49,7 @@ module Miu
     option 'sub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'sub port'
     option 'verbose', :type => :boolean, :default => false, :desc => 'verbose output', :aliases => '-V'
     def start
-      opts = options.dup
-      opts.keys.each { |k| opts[k.gsub('-', '_')] = opts.delete(k) if k.is_a?(::String) }
-      server = Miu::Server.new opts
+      server = Miu::Server.new Miu::Utility.underscorize_keys(options)
       server.run
     end
 

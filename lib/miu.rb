@@ -3,6 +3,7 @@ require 'miu/logger'
 
 module Miu
   autoload :CLI, 'miu/cli'
+  autoload :Utility, 'miu/utility'
   autoload :Command, 'miu/command'
   autoload :Server, 'miu/server'
   autoload :Packet, 'miu/packet'

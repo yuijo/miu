@@ -17,7 +17,7 @@ module Miu
       attr_accessor :called_from
 
       def register(*args, &block)
-        options = args.last.is_a?(::Hash) ? args.pop : {}
+        options = Miu::Utility.extract_options!(args)
         name = args.shift
         plugin = args.shift || self
         Miu.register name, plugin, options, &block

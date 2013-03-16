@@ -1,6 +1,4 @@
 require 'miu'
-require 'miu/socket'
-require 'miu/packet'
 require 'msgpack'
 
 module Miu
@@ -16,6 +14,7 @@ module Miu
     def send(*args)
       packet = Packet.new *args
       @socket.send_strings packet.dump
+      packet.id
     end
 
     private
