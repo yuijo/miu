@@ -1,4 +1,5 @@
 require 'miu/version'
+require 'miu/logger'
 
 module Miu
   autoload :CLI, 'miu/cli'

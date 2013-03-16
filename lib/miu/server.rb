@@ -9,6 +9,9 @@ module Miu
 
     def initialize(options = {})
       @options = options
+      if options[:verbose] && Miu.logger
+        Miu.logger.level = ::Logger::DEBUG
+      end
     end
 
     def run
@@ -30,18 +33,22 @@ module Miu
       @publisher.bind
       @subscriber.bind
 
-      puts "Starting miu"
-      puts "pub: #{@publisher.host}:#{@publisher.port}"
-      puts "sub: #{@subscriber.host}:#{@subscriber.port}"
+      Logger.info "Starting miu"
+      Logger.info "pub: #{@publisher.host}:#{@publisher.port}"
+      Logger.info "sub: #{@subscriber.host}:#{@subscriber.port}"
 
       trap(:INT) do
-        puts "Quit"
+        Logger.info "Quit"
         close
         exit
       end
 
       loop do
-        @subscriber.forward @publisher
+        parts = @subscriber.forward @publisher
+        if @options[:verbose]
+          packet = Packet.load parts
+          Logger.debug packet.inspect
+        end
       end
     end
 
