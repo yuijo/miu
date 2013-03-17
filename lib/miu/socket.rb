@@ -33,14 +33,14 @@ module Miu
       self
     end
 
-    def forward(forwarder)
+    def forward(to)
       parts = []
       loop do
         message = ZMQ::Message.new
         @socket.recvmsg message
         parts << message.copy_out_string
         more = @socket.more_parts?
-        forwarder.socket.sendmsg message, (more ? ZMQ::SNDMORE : 0)
+        to.socket.sendmsg message, (more ? ZMQ::SNDMORE : 0)
         return parts unless more
       end
     end
