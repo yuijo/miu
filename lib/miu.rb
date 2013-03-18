@@ -12,6 +12,8 @@ module Miu
   autoload :Command, 'miu/command'
   autoload :Plugin, 'miu/plugin'
   autoload :Plugins, 'miu/plugins'
+  autoload :Resources, 'miu/resources'
+  autoload :Messages, 'miu/messages'
 
   class << self
     def root
