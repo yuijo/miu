@@ -65,9 +65,10 @@ module Miu
     end
 
     desc 'supervise', 'Supervise miu and plugins'
-    def supervise
+    def supervise(*args)
       require 'god'
-      run "bundle exec god -c #{Miu.default_god_config}"
+      args.unshift "bundle exec god -c #{Miu.default_god_config}"
+      run args.join(' ')
     end
 
     desc 'god', 'Miu is a god'
