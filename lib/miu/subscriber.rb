@@ -50,11 +50,7 @@ module Miu
     private
 
     def socket_type
-      if ZMQ::LibZMQ.version3?
-        ZMQ::XSUB
-      else
-        ZMQ::SUB
-      end
+      ZMQ::SUB
     end
   end
 end
