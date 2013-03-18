@@ -1,5 +1,6 @@
 require 'miu'
-require 'msgpack'
+require 'miu/socket'
+require 'miu/packet'
 
 module Miu
   class Publisher < Socket
