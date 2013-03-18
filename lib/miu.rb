@@ -47,6 +47,11 @@ module Miu
       Pathname.new File.realpath(path)
     end
 
+    def context
+      require 'ffi-rzmq'
+      @context ||= ZMQ::Context.new
+    end
+
     def plugins
       @plugins ||= {}
     end

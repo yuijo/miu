@@ -9,15 +9,7 @@ module Miu
     def initialize(socket_type, options = {})
       @host = options[:host] || '127.0.0.1'
       @port = options[:port]
-
-      if options[:context]
-        @context = options[:context]
-        @terminate_context = false
-      else
-        @context = ZMQ::Context.new(options[:io_threads] || 1)
-        @terminate_context = true
-      end
-
+      @context = Miu.context
       @socket = @context.socket socket_type
     end
 
@@ -47,7 +39,6 @@ module Miu
 
     def close
       @socket.close
-      @context.terminate if @terminate_context
     end
 
     protected

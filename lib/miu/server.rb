@@ -1,10 +1,9 @@
 require 'miu'
-require 'ffi-rzmq'
 
 module Miu
   class Server
     attr_reader :options
-    attr_reader :context, :publisher, :subscriber
+    attr_reader :publisher, :subscriber
 
     def initialize(options = {})
       @options = options
@@ -17,17 +16,8 @@ module Miu
       pub_address = "#{@options[:pub_host]}:#{@options[:pub_port]}"
       sub_address = "#{@options[:sub_host]}:#{@options[:sub_port]}"
 
-      @context = ZMQ::Context.new
-      @publisher = Publisher.new({
-        :context => @context,
-        :host => @options[:pub_host],
-        :port => @options[:pub_port]
-      })
-      @subscriber = Subscriber.new({
-        :context => @context,
-        :host => @options[:sub_host],
-        :port => @options[:sub_port]
-      })
+      @publisher = Publisher.new({:host => @options[:pub_host], :port => @options[:pub_port]})
+      @subscriber = Subscriber.new({:host => @options[:sub_host], :port => @options[:sub_port]})
 
       @publisher.bind
       @subscriber.bind
@@ -36,10 +26,12 @@ module Miu
       Logger.info "pub: #{@publisher.host}:#{@publisher.port}"
       Logger.info "sub: #{@subscriber.host}:#{@subscriber.port}"
 
-      trap(:INT) do
-        Logger.info "Quit"
-        close
-        exit
+      [:INT, :TERM].each do |sig|
+        trap(sig) do
+          Logger.info "Quit"
+          close
+          exit
+        end
       end
 
       loop do
@@ -54,8 +46,6 @@ module Miu
     def close
       @subscriber.close
       @publisher.close
-      @context.terminate
     end
-    alias_method :shutdown, :close
   end
 end
