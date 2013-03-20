@@ -19,7 +19,7 @@ module Miu
         'id' => @id,
         'time' => @time,
       }
-      [@tag, data.to_msgpack]
+      [@tag, data.to_msgpack].map(&:to_s)
     end
 
     def self.load(parts)

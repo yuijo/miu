@@ -9,6 +9,8 @@ module Miu
   autoload :Socket, 'miu/socket'
   autoload :Publisher, 'miu/publisher'
   autoload :Subscriber, 'miu/subscriber'
+  autoload :Proxy, 'miu/proxy'
+  autoload :Forwarder, 'miu/forwarder'
   autoload :Command, 'miu/command'
   autoload :Plugin, 'miu/plugin'
   autoload :Plugins, 'miu/plugins'

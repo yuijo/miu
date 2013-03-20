@@ -1,27 +1,26 @@
 require 'miu'
 require 'miu/socket'
 require 'miu/packet'
+require 'miu/messages'
 
 module Miu
   class Subscriber < Socket
     attr_reader :subscribe
 
     def initialize(options = {})
+      options[:socket_type] ||= ZMQ::SUB
       options[:port] ||= Miu.default_pub_port
-      super socket_type, options
+      super options
 
-      subscribe options[:subscribe] || ''
       yield self if block_given?
     end
 
     def subscribe(value = nil)
-      if value
-        unsubscribe if @subscribe
-        @subscribe = value.to_s
-        @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
-      else
-        @subscribe
-      end
+      value = value.to_s
+      unsubscribe if subscribe? && @subscribe != value
+      @subscribe = value
+      @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
+      @subscribe
     end
 
     def unsubscribe
@@ -32,7 +31,12 @@ module Miu
       nil
     end
 
+    def subscribe?
+      !!@subscribe
+    end
+
     def recv
+      subscribe unless subscribe?
       parts = []
       @socket.recv_strings parts
       Packet.load parts
@@ -45,12 +49,6 @@ module Miu
           yield packet if packet
         end
       end
-    end
-
-    private
-
-    def socket_type
-      ZMQ::SUB
     end
   end
 end
