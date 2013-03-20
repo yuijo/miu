@@ -49,7 +49,7 @@ module Miu
     option 'sub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'sub port'
     option 'verbose', :type => :boolean, :default => false, :desc => 'verbose output', :aliases => '-V'
     def start
-      server = Miu::Server.new Miu::Utility.optionalize_keys(options)
+      server = Miu::Server.new Miu::Utility.optionify_keys(options)
       server.run
     end
 

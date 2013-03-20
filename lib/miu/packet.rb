@@ -26,7 +26,7 @@ module Miu
       tag = parts.shift
       data = MessagePack.unpack(parts.shift)
       body = data.delete('body')
-      new tag, body, Miu::Utility.symbolized_keys(data)
+      new tag, body, Miu::Utility.symbolize_keys(data)
     end
 
     def inspect
