@@ -14,6 +14,10 @@ module Miu
         yield self if block_given?
       end
 
+      def sub_type
+        @type.to_s.split('.', 2).last
+      end
+
       def to_hash
         {:network => @network.to_hash, :type => @type, :content => @content.to_hash}
       end
