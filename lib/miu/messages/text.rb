@@ -1,5 +1,5 @@
-require 'miu/messages/base'
-require 'miu/resources/text_content'
+require 'miu/resources'
+require 'miu/messages'
 
 module Miu
   module Messages
@@ -10,5 +10,7 @@ module Miu
         super 
       end
     end
+
+    register :text, Text
   end
 end

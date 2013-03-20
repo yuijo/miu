@@ -1,4 +1,4 @@
-require 'miu/resources/network'
+require 'miu/resources'
 require 'msgpack'
 
 module Miu
@@ -24,6 +24,24 @@ module Miu
 
       def to_msgpack(*args)
         to_hash.to_msgpack(*args)
+      end
+    end
+
+    class Unknown < Base
+    end
+
+    class << self
+      def types
+        @types ||= {}
+      end
+
+      def register(type, klass)
+        types[type.to_s] = klass
+      end
+
+      def guess(type)
+        type = type.to_s.split('.', 2).first
+        types[type] || Unknown
       end
     end
   end

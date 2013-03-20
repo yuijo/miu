@@ -1,4 +1,4 @@
-require 'miu/resources/base'
+require 'miu/resources'
 
 module Miu
   module Resources

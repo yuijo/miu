@@ -1,6 +1,4 @@
-require 'miu/resources/content'
-require 'miu/resources/room'
-require 'miu/resources/user'
+require 'miu/resources'
 
 module Miu
   module Resources
