@@ -70,7 +70,12 @@ module Miu
       run_god *args
     end
 
-    desc 'god', 'Miu is a god'
+    desc 'terminate', 'Terminate miu and plugins'
+    def terminate(*args)
+      args.unshift "-c #{Miu.default_god_config}"
+      run_god *args
+    end
+
     def god(*args)
       args.unshift "-p #{Miu.default_god_port}"
       run_god *args
