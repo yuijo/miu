@@ -8,9 +8,11 @@ module Miu
         include ::Thor::Actions
         add_runtime_options!
 
+        @plugin = plugin
+
         class << self
           def source_root
-            Miu.find_root('Gemfile', plugin.called_from)
+            Miu.find_root('Gemfile', @plugin.called_from)
           end
 
           def destination_root
