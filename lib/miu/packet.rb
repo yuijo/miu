@@ -14,19 +14,19 @@ module Miu
     end
 
     def dump
-      data = {
+      hash = {
         'body' => @body,
         'id' => @id,
         'time' => @time,
       }
-      [@tag, data.to_msgpack].map(&:to_s)
+      [@tag, hash.to_msgpack].map(&:to_s)
     end
 
     def self.load(parts)
       tag = parts.shift
-      data = MessagePack.unpack(parts.shift)
-      body = data.delete('body')
-      new tag, body, Miu::Utility.symbolize_keys(data)
+      hash = MessagePack.unpack(parts.shift)
+      body = hash.delete('body')
+      new tag, body, Miu::Utility.symbolize_keys(hash)
     end
 
     def inspect
