@@ -35,7 +35,7 @@ module Miu
     desc 'list', 'Lists plugins'
     def list
       table = Miu.plugins.map do |name, plugin|
-        [name, plugin.description]
+        [name, "# #{plugin.description}"]
       end
       say 'Plugins:'
       print_table table, :indent => 2, :truncate => true
@@ -53,7 +53,7 @@ module Miu
       server.run
     end
 
-    desc 'cat tag [body]', 'Nyan'
+    desc 'cat TAG [BODY]', 'Nyan'
     option 'host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
     option 'port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu sub port'
     def cat(tag, body = nil)
@@ -76,6 +76,7 @@ module Miu
       run_god *args
     end
 
+    desc 'god [ARGS]', 'Miu is a god'
     def god(*args)
       args.unshift "-p #{Miu.default_god_port}"
       run_god *args
