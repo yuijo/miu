@@ -42,17 +42,6 @@ module Miu
       'config/miu.god'
     end
 
-    def find_root(flag, base = nil)
-      require 'pathname'
-      path = base || Dir.pwd
-      while path && File.directory?(path) && !File.exist?("#{path}/#{flag}")
-        parent = File.dirname path
-        path = path != parent && parent
-      end
-      raise 'Could not find root path' unless path
-      Pathname.new File.realpath(path)
-    end
-
     def context
       require 'ffi-rzmq'
       @context ||= ZMQ::Context.new
@@ -62,14 +51,40 @@ module Miu
       @plugins ||= {}
     end
 
-    def register(name, plugin, options = {}, &block)
-      Miu.plugins[name] = plugin
-      if block
-        usage = options[:usage] || "#{name} [COMMAND]"
-        desc = options[:desc] || plugin.to_s
-        command = Miu::Command.new name, plugin, &block
-        Miu::CLI.register command, name, usage, desc
+    def load_plugins
+      gems.each do |spec|
+        @current_spec = spec
+        require spec.name
       end
+    end
+
+    def register(name, plugin, options = {}, &block)
+      plugin.spec = @current_spec
+      Miu.plugins[name] = plugin
+      usage = options[:usage] || "#{name} [COMMAND]"
+      desc = plugin.description
+      command = Miu::Command.new name, plugin, &block
+      Miu::CLI.register command, name, usage, desc
+      command
+    end
+
+    def find_root(pattern, base = nil)
+      require 'pathname'
+      path = base || Dir.pwd
+      while path && File.directory?(path) && Dir.glob("#{path}/#{pattern}").empty?
+        parent = File.dirname path
+        path = path != parent && parent
+      end
+      raise 'Could not find root path' unless path
+      Pathname.new File.realpath(path)
+    end
+
+    def gems
+      @gems ||= find_gems
+    end
+
+    def find_gems
+      Gem::Specification.find_all.select { |spec| spec.name =~ /^miu-/ }
     end
   end
 end

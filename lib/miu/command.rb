@@ -12,7 +12,7 @@ module Miu
 
         class << self
           def source_root
-            Miu.find_root('Gemfile', @plugin.called_from)
+            @plugin.spec.full_gem_path rescue nil
           end
 
           def destination_root

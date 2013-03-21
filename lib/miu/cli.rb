@@ -35,8 +35,9 @@ module Miu
 
     desc 'list', 'Lists plugins'
     def list
-      require 'miu/plugins'
-      table = Miu.plugins.map { |k, v| [k, "# #{v}" ] }
+      table = Miu.plugins.map do |name, plugin|
+        [name, plugin.description]
+      end
       say 'Plugins:'
       print_table table, :indent => 2, :truncate => true
       say
@@ -66,16 +67,26 @@ module Miu
 
     desc 'supervise', 'Supervise miu and plugins'
     def supervise(*args)
-      require 'god'
-      args.unshift "bundle exec god -c #{Miu.default_god_config}"
-      run args.join(' ')
+      args.unshift "-c #{Miu.default_god_config}"
+      run_god *args
     end
 
     desc 'god', 'Miu is a god'
     def god(*args)
+      args.unshift "-p #{Miu.default_god_port}"
+      run_god *args
+    end
+
+    private
+
+    def run_god(*args)
       require 'god'
-      args.unshift "bundle exec god -p #{Miu.default_god_port}"
+      args.unshift 'god'
       run args.join(' ')
     end
   end
 end
+
+# load miu plugins
+Miu.load_plugins
+

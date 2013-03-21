@@ -17,7 +17,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'bundler', '>= 1.2.0'
   gem.add_dependency 'thor', '>= 0.17.0'
   gem.add_dependency 'ffi-rzmq', '>= 1.0.0'
   gem.add_dependency 'msgpack', '>= 0.5.3'
