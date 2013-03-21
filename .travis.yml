@@ -5,3 +5,9 @@ rvm:
 branches:
   only:
     - master
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.net#miu-dev" 
+    use_notice: true
+    skip_join: true
