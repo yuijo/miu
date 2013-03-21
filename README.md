@@ -18,7 +18,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Setup
+
+```ruby
+mkdir miu
+cd miu
+miu init
+```
+
+### Start
+
+```ruby
+miu supervise
+```
+
+### Quit
+```ruby
+miu terminate
+```
 
 ## Contributing
 
