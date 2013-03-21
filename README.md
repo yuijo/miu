@@ -1,4 +1,4 @@
-# Miu
+# Miu [![Build Status](https://travis-ci.org/yuijo/miu.png?branch=master)](https://travis-ci.org/yuijo/miu)
 
 TODO: Write a gem description
 
