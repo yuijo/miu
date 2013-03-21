@@ -22,4 +22,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'ffi-rzmq', '>= 1.0.0'
   gem.add_dependency 'msgpack', '>= 0.5.3'
   gem.add_development_dependency 'rake', '>= 10.0.3'
+  gem.add_development_dependency 'rspec', '>= 2.13.0'
 end
