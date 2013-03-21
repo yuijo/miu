@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency 'thor', '>= 0.17.0'
+  gem.add_dependency 'god', '>= 0.13.2'
   gem.add_dependency 'ffi-rzmq', '>= 1.0.0'
   gem.add_dependency 'msgpack', '>= 0.5.3'
   gem.add_development_dependency 'rake', '>= 10.0.3'

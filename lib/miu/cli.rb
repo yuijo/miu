@@ -25,7 +25,6 @@ module Miu
 
     desc 'init', 'Generates a miu configuration files'
     def init
-      copy_file 'Gemfile'
       inside 'config' do
         template 'miu.god'
       end

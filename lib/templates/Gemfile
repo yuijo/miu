@@ -1,8 +1,0 @@
-source 'https://rubygems.org'
-
-group :assets do
-  gem 'god'
-end
-
-gem 'miu'
-
