@@ -1,11 +1,9 @@
 require 'miu'
+require 'miu/cli_base'
 require 'thor'
 
 module Miu
-  class CLI < ::Thor
-    include ::Thor::Actions
-    add_runtime_options!
-
+  class CLI < CLIBase
     class << self
       def source_root
         File.expand_path('../../templates', __FILE__)
@@ -17,7 +15,6 @@ module Miu
     end
 
     map ['--version', '-v'] => :version
-
     desc 'version', 'Show version'
     def version
       say "Miu #{Miu::VERSION}"

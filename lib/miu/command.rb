@@ -1,13 +1,10 @@
 require 'miu'
+require 'miu/cli_base'
 
 module Miu
   class Command
     def self.new(name, plugin, options = {}, &block)
-      require 'thor'
-      Class.new ::Thor do
-        include ::Thor::Actions
-        add_runtime_options!
-
+      Class.new CLIBase do
         @plugin = plugin
 
         class << self
