@@ -39,10 +39,9 @@ module Miu
       end
       say 'Plugins:'
       print_table table, :indent => 2, :truncate => true
-      say
     end
 
-    desc 'start', 'Start miu'
+    desc 'start', 'Start miu server'
     option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'pub host'
     option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub port'
     option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'sub host'
@@ -53,7 +52,7 @@ module Miu
       server.run
     end
 
-    desc 'cat TAG [BODY]', 'Nyan'
+    desc 'cat TAG [BODY]', 'Okaka kakeyoune'
     option 'host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
     option 'port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu sub port'
     def cat(tag, body = nil)
