@@ -5,6 +5,7 @@ module Miu
   class Command
     def self.new(name, plugin, options = {}, &block)
       Class.new CLIBase do
+        attr_accessor :plugin
         @plugin = plugin
 
         class << self
