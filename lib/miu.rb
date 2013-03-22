@@ -23,7 +23,7 @@ module Miu
     end
 
     def default_port
-      22200
+      ENV['MIU_DEFAULT_PORT'] || 22200
     end
 
     def default_god_port
