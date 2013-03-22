@@ -19,7 +19,7 @@ module Miu
 
   class << self
     def root
-      @root ||= find_root 'Gemfile'
+      @root ||= Dir.pwd
     end
 
     def default_port
@@ -66,17 +66,6 @@ module Miu
       command = Miu::Command.new name, plugin, &block
       Miu::CLI.register command, name, usage, desc
       command
-    end
-
-    def find_root(pattern, base = nil)
-      require 'pathname'
-      path = base || Dir.pwd
-      while path && File.directory?(path) && Dir.glob("#{path}/#{pattern}").empty?
-        parent = File.dirname path
-        path = path != parent && parent
-      end
-      raise 'Could not find root path' unless path
-      Pathname.new File.realpath(path)
     end
 
     def gems
