@@ -5,7 +5,7 @@ describe Miu::Command do
     before do
       plugin = double('plugin')
       plugin.stub_chain(:spec, :full_gem_path).and_return('path/to/plugin')
-      Miu.stub(:find_root).and_return ('path/to/root')
+      Miu.stub(:root).and_return ('path/to/root')
       @command = Miu::Command.new 'test_plugin', plugin do
         def self.hello
         end
