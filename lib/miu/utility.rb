@@ -2,6 +2,11 @@ module Miu
   module Utility
     module_function
 
+    def adapt(klass, value)
+      value ||= {}
+      value.is_a?(klass) ? value : klass.new(value)
+    end
+
     def extract_options!(args)
       args.last.is_a?(::Hash) ? args.pop : {}
     end

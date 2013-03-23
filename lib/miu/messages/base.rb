@@ -1,13 +1,17 @@
 require 'miu/resources'
 require 'msgpack'
+require 'securerandom'
 
 module Miu
   module Messages
     class Base
+      attr_accessor :id, :time
       attr_accessor :network, :type, :content
 
       def initialize(options = {})
-        @network = options[:network] || Resources::Network.new(options[:network] || {})
+        @id = options[:id] || SecureRandom.uuid
+        @time = options[:time] || Time.now.to_i
+        @network = Miu::Utility.adapt(Resources::Network, options[:network])
         @type = options[:type]
         @type = [@type, *Array(options[:sub_type])].compact.join('.')
         @content = options[:content]

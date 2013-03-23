@@ -1,36 +1,27 @@
 require 'miu'
-require 'securerandom'
 require 'msgpack'
 
 module Miu
   class Packet
-    attr_accessor :tag, :body, :id, :time
+    attr_accessor :tag, :message
 
-    def initialize(tag, body, options = {})
+    def initialize(tag, message)
       @tag = tag
-      @body = body
-      @id = options[:id] || SecureRandom.uuid
-      @time = options[:time] || Time.now.to_i
+      @message = message
     end
 
     def dump
-      hash = {
-        'body' => @body,
-        'id' => @id,
-        'time' => @time,
-      }
-      [@tag, hash.to_msgpack].map(&:to_s)
+      [@tag.to_s, @message.to_msgpack]
     end
 
     def self.load(parts)
       tag = parts.shift
-      hash = MessagePack.unpack(parts.shift)
-      body = hash.delete('body')
-      new tag, body, Miu::Utility.symbolize_keys(hash)
+      message = MessagePack.unpack(parts.shift)
+      new tag, message
     end
 
     def inspect
-      inspection = [:tag, :body, :id, :time].map do |name|
+      inspection = [:tag, :message].map do |name|
         "#{name}: #{__send__(name).inspect}"
       end.join(', ')
       "#<#{self.class} #{inspection}>"

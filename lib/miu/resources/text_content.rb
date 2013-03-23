@@ -6,8 +6,8 @@ module Miu
       attr_accessor :room, :user, :text
 
       def initialize(options = {})
-        @room = options[:room] || Room.new(options[:room] || {})
-        @user = options[:user] || User.new(options[:user] || {})
+        @room = Miu::Utility.adapt(Room, options[:room])
+        @user = Miu::Utility.adapt(User, options[:user])
         @text = options[:text]
         super options
       end

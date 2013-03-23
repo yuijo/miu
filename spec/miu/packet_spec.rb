@@ -2,29 +2,15 @@ require 'spec_helper'
 
 describe Miu::Packet do
   describe '#initialize' do
-    context 'with options' do
-      before { @packet = Miu::Packet.new 'tag', 'body', :id => 1, :time => 2 }
-      subject { @packet }
+    before { @packet = Miu::Packet.new 'tag', 'message' }
+    subject { @packet }
 
-      its(:tag) { should eq 'tag' }
-      its(:body) { should eq 'body' }
-      its(:id) { should eq 1 }
-      its(:time) { should eq 2 }
-    end
-
-    context 'without options' do
-      before { @packet = Miu::Packet.new 'tag', 'body' }
-      subject { @packet }
-
-      its(:tag) { should eq 'tag' }
-      its(:body) { should eq 'body' }
-      its(:id) { should_not be_nil }
-      its(:time) { should_not be_nil }
-    end
+    its(:tag) { should eq 'tag' }
+    its(:message) { should eq 'message' }
   end
 
   describe '#dump' do
-    before { @packet = Miu::Packet.new 'tag', 'body', :id => 1, :time => 2 }
+    before { @packet = Miu::Packet.new 'tag', 'message' }
     subject { @packet.dump }
 
     it { should be_instance_of Array }
@@ -35,12 +21,12 @@ describe Miu::Packet do
 
   describe '#load' do
     before do
-      @packet = Miu::Packet.new 'tag', 'body', :id => 1, :time => 2
+      @packet = Miu::Packet.new 'tag', 'message'
       @dumped = @packet.dump
     end
 
     it 'load succeeded' do
-      lambda { Miu::Packet.load @dumped }.should_not raise_error
+      expect { Miu::Packet.load @dumped }.to_not raise_error
     end
 
     context 'attributes' do
@@ -48,17 +34,14 @@ describe Miu::Packet do
       subject { @loaded }
 
       its(:tag) { should eq @packet.tag }
-      its(:body) { should eq @packet.body }
-      its(:id) { should eq @packet.id }
-      its(:time) { should eq @packet.time }
+      its(:message) { should eq @packet.message }
     end
   end
 
   describe '#inspect' do
-    before { @packet = Miu::Packet.new 'tag', 'body', :id => 1, :time => 2 }
-    subject { @packet.inspect }
+    let(:str) { Miu::Packet.new('tag', 'message').inspect }
 
-    it { should be_instance_of String }
-    it { should match /^#<Miu::Packet .*>$/ }
+    it { expect(str).to be_instance_of String }
+    it { expect(str).to match /^#<Miu::Packet .*>$/ }
   end
 end

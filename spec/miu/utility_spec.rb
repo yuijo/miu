@@ -1,6 +1,21 @@
 require 'spec_helper'
 
 describe Miu::Utility do
+  describe 'adapt' do
+    X = Struct.new(:value)
+
+    it 'adapted' do
+      x = X.new(123)
+      X.should_not_receive(:new)
+      Miu::Utility.adapt(X, x)
+    end
+
+    it 'unadapted' do
+      X.should_receive(:new).with(123)
+      Miu::Utility.adapt(X, 123)
+    end
+  end
+
   describe 'extract_options!' do
     it 'with options' do
       args = [1, 2, 3, {:a => :b}]
