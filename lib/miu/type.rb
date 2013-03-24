@@ -1,4 +1,3 @@
-require 'miu/errors'
 require 'msgpack'
 
 module Miu
@@ -8,7 +7,6 @@ module Miu
       @tokens.compact!
       @tokens.map! { |t| t.to_s.split('.') }
       @tokens.flatten!
-      raise InvalidTypeError if @tokens.empty?
     end
 
     def content_type
@@ -16,7 +14,7 @@ module Miu
     end
 
     def sub_type
-      @tokens[1..-1].join('.') || ''
+      @tokens[1..-1].join('.') rescue ''
     end
 
     def sub_type?

@@ -3,7 +3,12 @@ require 'spec_helper'
 describe Miu::Type do
   describe '#initialize' do
     context 'no args' do
-      it { expect { Miu::Type.new }.to raise_error(Miu::InvalidTypeError) }
+      before { @type = Miu::Type.new }
+      subject { @type }
+
+      its(:content_type) { should be_empty }
+      its(:sub_type) { should be_empty }
+      its(:sub_type?) { should be_false }
     end
 
     context 'with 1 arg' do
