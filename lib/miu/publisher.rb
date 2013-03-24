@@ -1,6 +1,6 @@
-require 'miu'
 require 'miu/socket'
 require 'miu/packet'
+require 'ffi-rzmq'
 
 module Miu
   class Publisher < Socket

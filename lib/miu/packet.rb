@@ -1,4 +1,4 @@
-require 'miu'
+require 'miu/errors'
 require 'msgpack'
 
 module Miu

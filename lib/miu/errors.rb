@@ -10,6 +10,9 @@ module Miu
     end
   end
 
+  class InvalidTypeError < Error
+  end
+
   class PacketLoadError < WrappedError
   end
 

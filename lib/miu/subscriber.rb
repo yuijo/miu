@@ -1,7 +1,7 @@
-require 'miu'
 require 'miu/socket'
 require 'miu/packet'
 require 'miu/messages'
+require 'ffi-rzmq'
 
 module Miu
   class Subscriber < Socket

@@ -1,7 +1,7 @@
-require 'miu'
 require 'miu/publisher'
 require 'miu/subscriber'
 require 'miu/proxy'
+require 'ffi-rzmq'
 
 module Miu
   class Forwarder

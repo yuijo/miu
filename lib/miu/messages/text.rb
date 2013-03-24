@@ -1,5 +1,5 @@
 require 'miu/resources'
-require 'miu/messages'
+require 'miu/messages/base'
 
 module Miu
   module Messages

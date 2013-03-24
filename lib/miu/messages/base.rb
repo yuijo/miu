@@ -1,5 +1,4 @@
 require 'miu/type'
-require 'miu/resources'
 require 'msgpack'
 require 'securerandom'
 require 'forwardable'

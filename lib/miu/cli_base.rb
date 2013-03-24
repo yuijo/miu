@@ -1,4 +1,3 @@
-require 'miu'
 require 'thor'
 
 module Miu

@@ -4,7 +4,7 @@ require 'miu/cli_base'
 module Miu
   class Command
     def self.new(name, plugin, options = {}, &block)
-      Class.new CLIBase do
+      Class.new Miu::CLIBase do
         attr_accessor :plugin
         @plugin = plugin
 

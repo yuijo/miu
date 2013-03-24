@@ -1,9 +1,7 @@
+require 'miu/errors'
 require 'msgpack'
 
 module Miu
-  class InvalidTypeError < StandardError
-  end
-
   class Type
     def initialize(*args)
       @tokens = args
