@@ -21,7 +21,8 @@ module Miu
 
   class << self
     def root
-      @root ||= Dir.pwd
+      require 'pathname'
+      @root ||= Pathname.new(Dir.pwd)
     end
 
     def default_port
