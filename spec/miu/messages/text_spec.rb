@@ -1,30 +1,29 @@
 require 'spec_helper'
 
-describe Miu::Messages::Base do
+describe Miu::Messages::Text do
   describe '#initialize' do
     context 'no args' do
       before do
-        @msg = Miu::Messages::Base.new
+        @msg = Miu::Messages::Text.new
       end
       subject { @msg }
 
       its(:id) { should be_instance_of String }
       its(:time) { should be_instance_of Fixnum }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should be_empty }
-      its(:content_type) { should be_empty }
+      its(:type) { should eq 'text' }
+      its(:content_type) { should eq 'text' }
       its(:sub_type) { should be_empty }
     end
 
     context 'with args' do
       before do
-        @msg = Miu::Messages::Base.new({
+        @msg = Miu::Messages::Text.new({
           :id => 123,
           :time => 123,
           :network => {:name => 'test'},
-          :type => 'type',
-          :sub_type => 'sub_type',
-          :content => 'content',
+          :sub_type => 'notice',
+          :content => {},
         })
       end
       subject { @msg }
@@ -32,10 +31,10 @@ describe Miu::Messages::Base do
       its(:id) { should eq 123 }
       its(:time) { should eq 123 }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should eq 'type.sub_type' }
-      its(:content_type) { should eq 'type' }
-      its(:sub_type) { should eq 'sub_type' }
-      its(:content) { should eq 'content' }
+      its(:type) { should eq 'text.notice' }
+      its(:content_type) { should eq 'text' }
+      its(:sub_type) { should eq 'notice' }
+      its(:content) { should be_instance_of Miu::Resources::TextContent }
     end
   end
 end

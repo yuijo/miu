@@ -12,14 +12,21 @@ module Miu
         @id = options[:id] || SecureRandom.uuid
         @time = options[:time] || Time.now.to_i
         @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
-        @type = options[:type]
-        @type = [@type, *Array(options[:sub_type])].compact.join('.')
+        @type = [options[:type], options[:sub_type]].flatten.compact.join('.')
         @content = options[:content]
         yield self if block_given?
       end
 
+      def types
+        @type.to_s.split('.', 2)
+      end
+
+      def content_type
+        types[0] || ''
+      end
+
       def sub_type
-        @type.to_s.split('.', 2).last
+        types[1] || ''
       end
 
       def to_hash
@@ -44,8 +51,7 @@ module Miu
       end
 
       def guess(type)
-        type = type.to_s.split('.', 2).first
-        types[type] || Unknown
+        types[type.to_s] || Unknown
       end
     end
   end
