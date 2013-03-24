@@ -11,7 +11,7 @@ module Miu
       def initialize(options = {})
         @id = options[:id] || SecureRandom.uuid
         @time = options[:time] || Time.now.to_i
-        @network = Miu::Utility.adapt(Resources::Network, options[:network])
+        @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
         @type = options[:type]
         @type = [@type, *Array(options[:sub_type])].compact.join('.')
         @content = options[:content]

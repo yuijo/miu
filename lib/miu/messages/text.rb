@@ -6,7 +6,7 @@ module Miu
     class Text < Base
       def initialize(options = {})
         options[:type] ||= 'text'
-        options[:content] = Miu::Utility.adapt(Resources::TextContent, options[:content])
+        options[:content] = Miu::Utility.adapt(Resources::TextContent, options[:content] || {})
         super 
       end
     end
