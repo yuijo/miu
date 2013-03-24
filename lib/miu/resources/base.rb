@@ -7,8 +7,8 @@ module Miu
         {}
       end
 
-      def to_msgpack
-        to_hash.to_msgpack
+      def to_msgpack(*args)
+        to_hash.to_msgpack(*args)
       end
     end
   end

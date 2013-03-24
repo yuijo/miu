@@ -23,7 +23,11 @@ module Miu
       end
 
       def to_hash
-        {:network => @network.to_hash, :type => @type, :content => @content.to_hash}
+        {
+          :network => @network.to_hash,
+          :type => @type,
+          :content => @content ? @content.to_hash : {}
+        }
       end
 
       def to_msgpack(*args)
