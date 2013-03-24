@@ -14,6 +14,7 @@ module Miu
   autoload :Command, 'miu/command'
   autoload :Plugin, 'miu/plugin'
   autoload :Plugins, 'miu/plugins'
+  autoload :Type, 'miu/type'
   autoload :Resources, 'miu/resources'
   autoload :Messages, 'miu/messages'
 

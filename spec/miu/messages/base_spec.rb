@@ -3,16 +3,14 @@ require 'spec_helper'
 describe Miu::Messages::Base do
   describe '#initialize' do
     context 'no args' do
-      before do
-        @msg = Miu::Messages::Base.new
-      end
+      before { @msg = Miu::Messages::Base.new(:type => 'test') }
       subject { @msg }
 
       its(:id) { should be_instance_of String }
       its(:time) { should be_instance_of Fixnum }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should be_empty }
-      its(:content_type) { should be_empty }
+      its(:type) { should be_instance_of Miu::Type }
+      its(:content_type) { should eq 'test' }
       its(:sub_type) { should be_empty }
     end
 
