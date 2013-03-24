@@ -30,10 +30,19 @@ describe Miu::Messages::Base do
       its(:id) { should eq 123 }
       its(:time) { should eq 123 }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should eq 'type.sub_type' }
+      its(:type) { should be_instance_of Miu::Type }
       its(:content_type) { should eq 'type' }
       its(:sub_type) { should eq 'sub_type' }
       its(:content) { should eq 'content' }
     end
+  end
+
+  describe '#to_hash' do
+    let(:hash) { Miu::Messages::Base.new(:type => 'test').to_hash }
+
+    it { expect(hash).to be_instance_of ::Hash }
+    it { expect(hash).to have_key :network }
+    it { expect(hash).to have_key :type }
+    it { expect(hash).to have_key :content }
   end
 end
