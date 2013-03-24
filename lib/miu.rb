@@ -3,6 +3,7 @@ require 'miu/logger'
 require 'miu/errors'
 
 module Miu
+  autoload :BaseCLI, 'miu/cli'
   autoload :CLI, 'miu/cli'
   autoload :Utility, 'miu/utility'
   autoload :Server, 'miu/server'
