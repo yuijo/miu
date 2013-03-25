@@ -1,4 +1,5 @@
 require 'miu/type'
+require 'miu/messages'
 require 'msgpack'
 require 'securerandom'
 require 'forwardable'
@@ -35,20 +36,6 @@ module Miu
     end
 
     class Unknown < Base
-    end
-
-    class << self
-      def types
-        @types ||= {}
-      end
-
-      def register(type, klass)
-        types[type.to_s] = klass
-      end
-
-      def guess(type)
-        types[type.to_s] || Unknown
-      end
     end
   end
 end
