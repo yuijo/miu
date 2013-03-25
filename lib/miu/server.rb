@@ -25,6 +25,8 @@ module Miu
 
       @forwarder = Forwarder.new @options
       @forwarder.run
+    rescue => e
+      Miu::Logger.exception e
     end
 
     def close
