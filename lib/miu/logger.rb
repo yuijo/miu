@@ -12,8 +12,8 @@ module Miu
       EOS
     end
 
-    def exception(msg, ex)
-      error %(#{msg}\n#{format_exception(ex)})
+    def exception(ex)
+      error format_exception(ex)
     end
 
     def format_exception(ex)

@@ -43,7 +43,8 @@ module Miu
     option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub port'
     option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'sub host'
     option 'sub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'sub port'
-    option 'bridge', :type => :boolean, :default => false, :desc => 'bridge mode'
+    option 'bridge-host', :type => :string, :default => '127.0.0.1', :desc => 'bridge host'
+    option 'bridge-port', :type => :numeric, :desc => 'bridge port'
     option 'verbose', :type => :boolean, :default => false, :desc => 'verbose output', :aliases => '-V'
     def start
       server = Miu::Server.new Miu::Utility.optionify_keys(options)

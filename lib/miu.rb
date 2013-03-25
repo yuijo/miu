@@ -26,7 +26,7 @@ module Miu
     end
 
     def default_port
-      ENV['MIU_DEFAULT_PORT'] || 22200
+      Integer(ENV['MIU_DEFAULT_PORT']) rescue  22200
     end
 
     def default_god_port
