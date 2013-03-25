@@ -68,7 +68,7 @@ module Miu
 
     desc 'terminate', 'Terminate miu and plugins'
     def terminate(*args)
-      args.unshift "-p #{Miu.default_god_port}"
+      args.unshift "-p #{Miu.default_god_port} terminate"
       run_god *args
     end
 
