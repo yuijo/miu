@@ -12,10 +12,10 @@ module Miu
       yield self if block_given?
     end
 
-    def send(*args)
-      packet = Packet.new *args
+    def send(tag, message)
+      packet = Packet.new tag, message
       @socket.send_strings packet.dump
-      packet.id
+      packet
     end
   end
 end
