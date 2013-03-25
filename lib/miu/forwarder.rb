@@ -18,7 +18,11 @@ module Miu
         :host => options[:sub_host],
         :port => options[:sub_port]
       })
-      @subscriber.bind
+      if options[:bridge]
+        @subscriber.connect
+      else
+        @subscriber.bind
+      end
       @subscriber.subscribe
     end
 

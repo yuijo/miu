@@ -13,7 +13,7 @@ module Miu
     def run
       Logger.info "Starting Miu #{Miu::VERSION} (ZeroMQ #{ZMQ::LibZMQ.version.values.join('.')})"
       Logger.info "Publish on #{@options[:pub_host]}:#{@options[:pub_port]}"
-      Logger.info "Subscribe on #{@options[:sub_host]}:#{@options[:sub_port]}"
+      Logger.info "Subscribe #{options[:bridge] ? 'from' : 'on'} #{@options[:sub_host]}:#{@options[:sub_port]}"
 
       [:INT, :TERM].each do |sig|
         trap(sig) do
