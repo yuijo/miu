@@ -18,21 +18,31 @@ module Miu
         :host => options[:sub_host],
         :port => options[:sub_port]
       })
-      if options[:bridge]
-        @subscriber.connect
-      else
-        @subscriber.bind
-      end
+      @subscriber.bind
       @subscriber.subscribe
+
+      if options[:bridge_port]
+        @bridge = Subscriber.new({
+          :socket_type => sub_socket_type,
+          :host => options[:bridge_host],
+          :port => options[:bridge_port]
+        })
+        @bridge.connect
+        @bridge.subscribe
+      end
     end
 
     def close
+      @bridge.close if @bridge
       @subscriber.close
       @publisher.close
     end
 
     def run
-      proxy = Proxy.new @subscriber, @publisher
+      frontends = [@subscriber, @bridge].compact
+      backends = [@publisher]
+
+      proxy = Proxy.new frontends, backends
       proxy.run
     end
 
