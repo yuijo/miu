@@ -3,22 +3,21 @@ require 'ffi-rzmq'
 
 module Miu
   class Proxy
-    attr_reader :frontend, :backend, :capture
+    attr_reader :frontends, :backends
     attr_reader :poller
 
-    SEND_TO = '@__proxy_send_to__'
+    PROXY_TO = '@__proxy_to__'
 
-    def initialize(frontend, backend, capture = nil)
-      @frontend = unwrap frontend
-      @backend = unwrap backend
-      @capture = unwrap capture
+    def initialize(frontends, backends)
+      @frontends = Array(frontends).map { |s| unwrap s }
+      @backends = Array(backends).map { |s| unwrap s }
 
-      @frontend.instance_variable_set SEND_TO, @backend
-      @backend.instance_variable_set SEND_TO, @frontend
+      @frontends.each { |s| s.instance_variable_set PROXY_TO, @backends }
+      @backends.each { |s| s.instance_variable_set PROXY_TO, @frontends }
 
       @poller = ZMQ::Poller.new
-      @poller.register_readable @frontend
-      @poller.register_readable @backend
+      @frontends.each { |s| @poller.register_readable s }
+      @backends.each { |s| @poller.register_readable s }
     end
 
     def run
@@ -26,16 +25,18 @@ module Miu
         @poller.poll
         @poller.readables.each do |from|
           loop do
-            to = from.instance_variable_get SEND_TO
             msg = ZMQ::Message.new
             from.recvmsg msg
             more = from.more_parts?
-            if @capture
+
+            proxy_to = from.instance_variable_get PROXY_TO
+            proxy_to.each do |to|
               ctrl = ZMQ::Message.new
               ctrl.copy msg.pointer
-              @capture.sendmsg ctrl, (more ? ZMQ::SNDMORE : 0)
+              to.sendmsg ctrl, (more ? ZMQ::SNDMORE : 0)
             end
-            to.sendmsg msg, (more ? ZMQ::SNDMORE : 0)
+
+            msg.close
             break unless more
           end
         end
