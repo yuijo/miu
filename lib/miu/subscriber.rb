@@ -37,16 +37,25 @@ module Miu
 
     def recv
       subscribe unless subscribe?
+
       parts = []
       @socket.recv_strings parts
-      Packet.load parts
+      packet = Packet.load parts
+
+      begin
+        hash = Miu::Utility.symbolize_keys(packet.data, true) rescue {}
+        message_class = Miu::Messages.guess(hash[:type])
+        packet.data = message_class.new hash
+        packet
+      rescue => e
+        raise MessageLoadError, e
+      end
     end
 
     def each
       if block_given?
         loop do
-          packet = recv rescue nil
-          yield packet if packet
+          yield recv
         end
       end
     end
