@@ -5,7 +5,7 @@ module Miu
     module_function
 
     %w(debug info warn error fatal).each do |name|
-      instance_eval <<-EOS
+      eval <<-EOS
         def #{name}(msg)
           Miu.logger.#{name}(msg) if Miu.logger
         end
