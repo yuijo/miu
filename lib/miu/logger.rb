@@ -12,12 +12,16 @@ module Miu
       EOS
     end
 
-    def exception(ex)
-      error format_exception(ex)
+    def exception(*args)
+      ex = args.pop
+      error [*args, format_exception(ex)].join("\n")
     end
 
     def format_exception(ex)
-      %(#{ex.class}: #{ex.to_s}\n#{ex.backtrace.join("\n")})
+      rows = []
+      rows << "#{ex.class}: #{ex.to_s}"
+      rows += ex.backtrace.map { |s| "\tfrom #{s}" }
+      rows.join("\n")
     end
 
     def formatter(severity, time, progname, msg)
