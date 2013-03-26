@@ -26,9 +26,11 @@ module Miu
   end
 
   class << self
+    attr_accessor :default_logger
     attr_accessor :logger
   end
-  self.logger = ::Logger.new(STDERR)
+  self.default_logger = ::Logger.new(STDERR)
+  self.logger = self.default_logger
   self.logger.level = ::Logger::INFO
   self.logger.formatter = Miu::Logger.method(:formatter)
 end
