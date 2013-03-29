@@ -15,6 +15,7 @@ describe Miu do
 
     context 'overwrite' do
       before { ENV['MIU_DEFAULT_PORT'] = '12345' }
+      after { ENV.delete 'MIU_DEFAULT_PORT' }
       it { expect(Miu.default_port).to be_instance_of Fixnum }
       it { expect(Miu.default_port).to eq 12345 }
     end
