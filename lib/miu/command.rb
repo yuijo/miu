@@ -21,14 +21,21 @@ module Miu
             super task, namespace, subcommand || options.fetch(:subcommand, true)
           end
 
-          def add_miu_pub_options!
-            option 'miu-pub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu pub host'
-            option 'miu-pub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu pub port'
+          def add_miu_pub_options(name)
+            option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu pub host'
+            option 'pub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu pub port'
+            option 'pub-tag', :type => :string, :default => "miu.input.#{name}.", :desc => 'miu pub tag'
           end
 
-          def add_miu_sub_options!
-            option 'miu-sub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
-            option 'miu-sub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'miu sub port'
+          def add_miu_sub_options(name)
+            option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
+            option 'sub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'miu sub port'
+            option 'sub-tag', :type => :string, :default => "miu.output.#{name}.", :desc => 'miu sub tag'
+          end
+
+          def add_miu_pub_sub_options(name)
+            add_miu_pub_options name
+            add_miu_sub_options name
           end
         end
 

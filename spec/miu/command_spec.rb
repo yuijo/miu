@@ -18,8 +18,9 @@ describe Miu::Command do
     its(:source_root) { should eq 'path/to/plugin' }
     its(:destination_root) { should eq 'path/to/root' }
     its(:namespace) { should eq 'test_plugin' }
-    it { should respond_to :add_miu_pub_options! }
-    it { should respond_to :add_miu_sub_options! }
+    it { should respond_to :add_miu_pub_options }
+    it { should respond_to :add_miu_sub_options }
+    it { should respond_to :add_miu_pub_sub_options }
     it { should respond_to :hello }
   end
 end
