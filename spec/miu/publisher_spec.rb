@@ -1,18 +1,26 @@
 require 'spec_helper'
 
 describe Miu::Publisher do
-  let(:pub) { Miu::Publisher.new }
+  context 'default socket' do
+    let(:pub) { Miu::Publisher.new }
 
-  describe '#send' do
-    it do
-      tag = 'tag'
-      data = 'msg'
+    it { expect(pub).to be_kind_of(Miu::PubSocket) }
+    it { expect(pub).to be_kind_of(Miu::Publishable) }
+    it { expect(pub).to be_kind_of(Miu::Publisher) }
+    it { expect(pub).to be_respond_to(:connect, :write) }
+  end
 
-      pub.socket.should_receive(:send_strings) do |args|
-        expect(args[0]).to eq tag
-        expect(args[1]).to eq data.to_msgpack
-      end
-      expect(pub.send tag, data).to be_instance_of Miu::Packet
+  context 'other socket' do
+    class MyPubSocket
+      def connect(host, port); end
+      def write; end
     end
+
+    let(:pub) { Miu::Publisher.new(:socket => MyPubSocket) }
+
+    it { expect(pub).to be_kind_of(MyPubSocket) }
+    it { expect(pub).to be_kind_of(Miu::Publishable) }
+    it { expect(pub).to be_kind_of(Miu::Publisher) }
+    it { expect(pub).to be_respond_to(:connect, :write) }
   end
 end

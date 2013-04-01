@@ -1,21 +1,24 @@
 require 'miu/socket'
-require 'miu/packet'
-require 'ffi-rzmq'
+require 'miu/publishable'
+require 'miu/utility'
 
 module Miu
-  class Publisher < Socket
-    def initialize(options = {})
-      options[:socket_type] ||= ZMQ::PUB
-      options[:port] ||= Miu.default_sub_port
-      super options
+  module Publisher
+    class << self
+      def new(*args, &block)
+        options = Miu::Utility.extract_options! args
+        host = args.shift || '127.0.0.1'
+        port = args.shift || Miu.default_sub_port
+        socket = options[:socket] || PubSocket
 
-      yield self if block_given?
-    end
+        klass = Class.new(socket, &block)
+        klass.send :include, Publishable
+        klass.send :include, self
 
-    def send(tag, message)
-      packet = Packet.new tag, message
-      @socket.send_strings packet.dump
-      packet
+        klass.new.tap do |pub|
+          pub.connect host, port
+        end
+      end
     end
   end
 end
