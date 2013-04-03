@@ -1,46 +1,33 @@
-require 'miu/publisher'
-require 'miu/subscriber'
+require 'miu/socket'
 require 'miu/proxy'
 require 'ffi-rzmq'
 
 module Miu
   class Forwarder
     def initialize(options = {})
-      @publisher = Publisher.new({
-        :socket_type => pub_socket_type,
-        :host => options[:pub_host],
-        :port => options[:pub_port]
-      })
-      @publisher.bind
+      @pub = pub_socket_class.new
+      @pub.bind options[:pub_host], options[:pub_port]
 
-      @subscriber = Subscriber.new({
-        :socket_type => sub_socket_type,
-        :host => options[:sub_host],
-        :port => options[:sub_port]
-      })
-      @subscriber.bind
-      @subscriber.subscribe
+      @sub = sub_socket_class.new
+      @sub.bind options[:sub_host], options[:sub_port]
+      @sub.subscribe ''
 
       if options[:bridge_port]
-        @bridge = Subscriber.new({
-          :socket_type => sub_socket_type,
-          :host => options[:bridge_host],
-          :port => options[:bridge_port]
-        })
-        @bridge.connect
-        @bridge.subscribe
+        @bridge = sub_socket_class.new
+        @bridge.connect options[:bridge_host], options[:bridge_port]
+        @bridge.subscribe ''
       end
     end
 
     def close
       @bridge.close if @bridge
-      @subscriber.close
-      @publisher.close
+      @sub.close
+      @pub.close
     end
 
     def run
-      frontends = [@subscriber, @bridge].compact
-      backends = [@publisher]
+      frontends = [@sub, @bridge].compact
+      backends = [@pub]
 
       proxy = Proxy.new frontends, backends
       proxy.run
@@ -48,19 +35,19 @@ module Miu
 
     private
 
-    def pub_socket_type
-      if ZMQ::LibZMQ.version3?
-        ZMQ::XPUB
+    def pub_socket_class
+      if ::ZMQ::LibZMQ.version3?
+        XPubSocket
       else
-        ZMQ::PUB
+        PubSocket
       end
     end
 
-    def sub_socket_type
-      if ZMQ::LibZMQ.version3?
-        ZMQ::XSUB
+    def sub_socket_class
+      if ::ZMQ::LibZMQ.version3?
+        XSubSocket
       else
-        ZMQ::SUB
+        SubSocket
       end
     end
   end

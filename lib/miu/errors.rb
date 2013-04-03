@@ -7,6 +7,7 @@ module Miu
     
     def initialize(error)
       @error = error
+      super "#{@error.class}: #{@error.to_s}"
     end
   end
 

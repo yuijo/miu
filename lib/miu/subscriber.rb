@@ -1,61 +1,22 @@
 require 'miu/socket'
-require 'miu/packet'
-require 'miu/messages'
-require 'ffi-rzmq'
+require 'miu/subscribable'
+require 'miu/utility'
 
 module Miu
-  class Subscriber < Socket
-    attr_reader :subscribe
+  module Subscriber
+    class << self
+      def new(*args, &block)
+        options = Miu::Utility.extract_options! args
+        host = args.shift || '127.0.0.1'
+        port = args.shift || Miu.default_pub_port
+        socket = options[:socket] || SubSocket
 
-    def initialize(options = {})
-      options[:socket_type] ||= ZMQ::SUB
-      options[:port] ||= Miu.default_pub_port
-      super options
+        klass = Class.new(socket, &block)
+        klass.send :include, Subscribable
+        klass.send :include, self
 
-      yield self if block_given?
-    end
-
-    def subscribe(value = nil)
-      value = value.to_s
-      unsubscribe if subscribe? && @subscribe != value
-      @subscribe = value
-      @socket.setsockopt ZMQ::SUBSCRIBE, @subscribe
-      @subscribe
-    end
-
-    def unsubscribe
-      if @subscribe
-        @socket.setsockopt ZMQ::UNSUBSCRIBE, @subscribe
-        @subscribe = nil
-      end
-      nil
-    end
-
-    def subscribe?
-      !!@subscribe
-    end
-
-    def recv
-      subscribe unless subscribe?
-
-      parts = []
-      @socket.recv_strings parts
-      packet = Packet.load parts
-
-      begin
-        hash = Miu::Utility.symbolize_keys(packet.data, true) rescue {}
-        message_class = Miu::Messages.guess(hash[:type])
-        packet.data = message_class.new hash
-        packet
-      rescue => e
-        raise MessageLoadError, e
-      end
-    end
-
-    def each
-      if block_given?
-        loop do
-          yield recv
+        klass.new.tap do |sub|
+          sub.connect host, port
         end
       end
     end

@@ -15,7 +15,7 @@ module Miu
       @frontends.each { |s| s.instance_variable_set PROXY_TO, @backends }
       @backends.each { |s| s.instance_variable_set PROXY_TO, @frontends }
 
-      @poller = ZMQ::Poller.new
+      @poller = ::ZMQ::Poller.new
       @frontends.each { |s| @poller.register_readable s }
       @backends.each { |s| @poller.register_readable s }
     end
@@ -25,15 +25,15 @@ module Miu
         @poller.poll
         @poller.readables.each do |from|
           loop do
-            msg = ZMQ::Message.new
+            msg = ::ZMQ::Message.new
             from.recvmsg msg
             more = from.more_parts?
 
             proxy_to = from.instance_variable_get PROXY_TO
             proxy_to.each do |to|
-              ctrl = ZMQ::Message.new
+              ctrl = ::ZMQ::Message.new
               ctrl.copy msg.pointer
-              to.sendmsg ctrl, (more ? ZMQ::SNDMORE : 0)
+              to.sendmsg ctrl, (more ? ::ZMQ::SNDMORE : 0)
             end
 
             msg.close

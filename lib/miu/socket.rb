@@ -1,30 +1,38 @@
 require 'miu'
 require 'ffi-rzmq'
+require 'forwardable'
 
 module Miu
   class Socket
-    attr_reader :host, :port
-    attr_reader :context, :socket
-
-    def initialize(options = {})
-      @host = options[:host] || '127.0.0.1'
-      @port = options[:port]
-      @context = Miu.context
-      @socket = @context.socket options[:socket_type]
+    class << self
+      def socket_type(type)
+        class_eval <<-EOS
+          def socket_type; :#{type.to_s.upcase}; end
+        EOS
+      end
     end
 
-    def bind
-      error_wrapper do
-        @socket.bind "tcp://#{@host}:#{@port}"
-      end
-      self
+    attr_reader :socket
+    attr_reader :linger
+
+    def initialize
+      @socket = Miu.context.socket ::ZMQ.const_get(socket_type)
+      @linger = 0
     end
 
-    def connect
-      error_wrapper do
-        socket.connect "tcp://#{@host}:#{@port}"
-      end
-      self
+    def bind(*args)
+      address = build_address *args
+      error_wrapper { @socket.bind address }
+    end
+
+    def connect(*args)
+      address = build_address *args
+      error_wrapper { @socket.connect address }
+    end
+
+    def linger=(value)
+      @linger = value || -1
+      error_wrapper { @socket.setsockopt(::ZMQ::LINGER, value) }
     end
 
     def close
@@ -33,11 +41,86 @@ module Miu
 
     protected
 
+    def build_address(*args)
+      host = args.shift
+      port = args.shift
+      port ? "tcp://#{host}:#{port}" : host
+    end
+
     def error_wrapper(source = nil, &block)
-      rc = block.call
-      unless ZMQ::Util.resultcode_ok? rc
-        raise ZMQ::ZeroMQError.new source, rc, ZMQ::Util.errno, ZMQ::Util.error_string
+      error = nil
+
+      begin
+        rc = block.call
+        error = "#{::ZMQ::Util.error_string} (#{::ZMQ::Util.errno})" unless ::ZMQ::Util.resultcode_ok?(rc)
+      rescue => e
+        error = e.to_s
       end
+
+      raise IOError, error if error
+      true
+    end
+  end
+
+  module ReadableSocket
+    extend Forwardable
+    def_delegator :@socket, :more_parts?
+
+    def bind(*args)
+      self.linger = @linger
+      super *args
+    end
+
+    def connect(*args)
+      self.linger = @linger
+      super *args
+    end
+
+    def read(buffer = '')
+      error_wrapper { @socket.recv_string buffer }
+      buffer
+    end
+  end
+
+  module WritableSocket
+    def write(*args)
+      error_wrapper { @socket.send_strings args.flatten }
+      args
+    end
+
+    alias_method :<<, :write
+  end
+
+  class PubSocket < Socket
+    include WritableSocket
+    socket_type :pub
+  end
+
+  class SubSocket < Socket
+    include ReadableSocket
+    socket_type :sub
+
+    def subscribe(topic)
+      error_wrapper { @socket.setsockopt(::ZMQ::SUBSCRIBE, topic) }
+    end
+
+    def unsubscribe(topic)
+      error_wrapper { @socket.setsockopt(::ZMQ::UNSUBSCRIBE, topic) }
+    end
+  end
+
+  class XPubSocket < PubSocket
+    socket_type :xpub
+  end
+
+  class XSubSocket < SubSocket
+    socket_type :xsub
+
+    def subscribe(topic)
+      true
+    end
+
+    def unsubscribe(topic)
       true
     end
   end
