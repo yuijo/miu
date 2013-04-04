@@ -3,6 +3,8 @@ require 'celluloid/zmq'
 
 describe Miu::Subscriber do
   shared_examples 'subscribable socket' do
+    let(:sub) { Miu::Subscriber.new(:socket => base) }
+
     it { expect(sub).to be_kind_of(base) }
     it { expect(sub).to be_kind_of(Miu::Subscribable) }
     it { expect(sub).to be_kind_of(Miu::Subscriber) }
@@ -12,14 +14,12 @@ describe Miu::Subscriber do
   context 'miu socket' do
     it_should_behave_like 'subscribable socket' do
       let(:base) { Miu::SubSocket }
-      let(:sub) { Miu::Subscriber.new }
     end
   end
 
   context 'celluloid/zmq socket' do
     it_should_behave_like 'subscribable socket' do
       let(:base) { Celluloid::ZMQ::SubSocket }
-      let(:sub) { Miu::Subscriber.new(:socket => base) }
     end
   end
 
@@ -31,7 +31,6 @@ describe Miu::Subscriber do
 
     it_should_behave_like 'subscribable socket' do
       let(:base) { MySubSocket }
-      let(:sub) { Miu::Subscriber.new(:socket => base) }
     end
   end
 end
