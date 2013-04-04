@@ -26,15 +26,19 @@ module Miu
 
         alias_method :read_without_packet, :read
         alias_method :read, :read_with_packet
+      end
 
-        def each
-          if block_given?
-            loop do
-              yield read
-            end
-          end
+      base.send :include, ::Enumerable
+    end
+
+    def each
+      if block_given?
+        loop do
+          yield read
         end
       end
+
+      return self
     end
   end
 end

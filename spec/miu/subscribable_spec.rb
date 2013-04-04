@@ -12,6 +12,9 @@ describe Miu::Subscribable do
   it { expect(socket).to be_respond_to :read_with_packet }
   it { expect(socket).to be_respond_to :read_without_packet }
 
+  it { expect(socket).to be_kind_of ::Enumerable }
+  it { expect(socket).to be_respond_to :each }
+
   describe '#read' do
     before do
       socket.stub(:read_without_packet).and_return(tag, data.to_msgpack)
