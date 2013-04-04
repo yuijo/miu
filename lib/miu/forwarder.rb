@@ -6,15 +6,15 @@ module Miu
   class Forwarder
     def initialize(options = {})
       @pub = pub_socket_class.new
-      @pub.bind options[:pub_host], options[:pub_port]
+      @pub.bind Miu::Socket.build_address(options[:pub_host], options[:pub_port])
 
       @sub = sub_socket_class.new
-      @sub.bind options[:sub_host], options[:sub_port]
+      @sub.bind Miu::Socket.build_address(options[:sub_host], options[:sub_port])
       @sub.subscribe ''
 
       if options[:bridge_port]
         @bridge = sub_socket_class.new
-        @bridge.connect options[:bridge_host], options[:bridge_port]
+        @bridge.connect Miu::Socket.build_address(options[:bridge_host], options[:bridge_port])
         @bridge.subscribe ''
       end
     end
