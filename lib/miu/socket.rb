@@ -10,6 +10,12 @@ module Miu
           def socket_type; :#{type.to_s.upcase}; end
         EOS
       end
+
+      def build_address(*args)
+        host = args.shift
+        port = args.shift
+        port ? "tcp://#{host}:#{port}" : host
+      end
     end
 
     attr_reader :socket
@@ -20,13 +26,11 @@ module Miu
       @linger = 0
     end
 
-    def bind(*args)
-      address = build_address *args
+    def bind(address)
       error_wrapper { @socket.bind address }
     end
 
-    def connect(*args)
-      address = build_address *args
+    def connect(address)
       error_wrapper { @socket.connect address }
     end
 
@@ -40,12 +44,6 @@ module Miu
     end
 
     protected
-
-    def build_address(*args)
-      host = args.shift
-      port = args.shift
-      port ? "tcp://#{host}:#{port}" : host
-    end
 
     def error_wrapper(source = nil, &block)
       error = nil
@@ -66,14 +64,14 @@ module Miu
     extend Forwardable
     def_delegator :@socket, :more_parts?
 
-    def bind(*args)
+    def bind(address)
       self.linger = @linger
-      super *args
+      super address
     end
 
-    def connect(*args)
+    def connect(address)
       self.linger = @linger
-      super *args
+      super address
     end
 
     def read(buffer = '')

@@ -16,7 +16,8 @@ module Miu
         klass.send :include, self
 
         klass.new.tap do |sub|
-          sub.connect host, port
+          address = Miu::Socket.build_address host, port
+          sub.connect address
         end
       end
     end
