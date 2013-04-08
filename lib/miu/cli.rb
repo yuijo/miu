@@ -51,15 +51,26 @@ module Miu
       server.run
     end
 
-    desc 'cat TAG [BODY]', 'Okaka kakeyoune'
+    desc 'cat TAG ROOM TEXT', 'Okaka kakeyoune'
     option 'host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
     option 'port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu sub port'
-    def cat(tag, body = nil)
+    option 'network', :type => :string, :default => 'debug', :desc => 'miu network name'
+    def cat(tag, room, text)
+      require 'miu/messages'
       require 'json'
       publisher = Miu::Publisher.new :host => options[:host], :port => options[:port]
-      publisher.connect
-      body = JSON.load(body) rescue body
-      publisher.send tag, body
+      message = Miu::Messages::Text.new do |m|
+        m.network.name = options[:network]
+        m.content.tap do |c|
+          c.room.name = room
+          c.text = text
+        end
+      end
+
+      packet = publisher.write tag, message
+      Miu::Logger.info packet.inspect
+    rescue => e
+      Miu::Logger.exception e
     end
 
     desc 'supervise', 'Supervise miu and nodes'
