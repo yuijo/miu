@@ -1,8 +1,6 @@
-require 'miu/type'
 require 'miu/messages'
 require 'msgpack'
 require 'securerandom'
-require 'forwardable'
 
 module Miu
   module Messages
@@ -10,14 +8,11 @@ module Miu
       attr_accessor :id, :time
       attr_accessor :network, :type, :content
 
-      extend Forwardable
-      def_delegators :@type, :content_type, :sub_type
-
       def initialize(options = {})
         @id = options[:id] || SecureRandom.uuid
         @time = options[:time] || Time.now.to_i
         @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
-        @type = Miu::Type.new(options[:type], options[:sub_type])
+        @type = options[:type]
         @content = options[:content]
         yield self if block_given?
       end

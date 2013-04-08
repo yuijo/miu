@@ -10,9 +10,7 @@ module Miu
       end
 
       def guess(type)
-        require 'miu/type'
-        type = Miu::Type.new type
-        types[type.content_type] || Unknown
+        types[type.to_s] || Unknown
       end
     end
   end

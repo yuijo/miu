@@ -11,9 +11,7 @@ describe Miu::Messages::Text do
       its(:id) { should be_instance_of String }
       its(:time) { should be_instance_of Fixnum }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should be_instance_of Miu::Type }
-      its(:content_type) { should eq 'text' }
-      its(:sub_type) { should be_empty }
+      its(:type) { should eq 'text' }
     end
 
     context 'with args' do
@@ -22,7 +20,6 @@ describe Miu::Messages::Text do
           :id => 123,
           :time => 123,
           :network => {:name => 'test'},
-          :sub_type => 'notice',
           :content => {},
         })
       end
@@ -31,9 +28,7 @@ describe Miu::Messages::Text do
       its(:id) { should eq 123 }
       its(:time) { should eq 123 }
       its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should be_instance_of Miu::Type }
-      its(:content_type) { should eq 'text' }
-      its(:sub_type) { should eq 'notice' }
+      its(:type) { should eq 'text' }
       its(:content) { should be_instance_of Miu::Resources::TextContent }
     end
   end
