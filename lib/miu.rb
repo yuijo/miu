@@ -23,7 +23,7 @@ module Miu
 
   autoload :Command, 'miu/command'
   autoload :Node, 'miu/node'
-  autoload :Type, 'miu/type'
+  autoload :Nodes, 'miu/nodes'
   autoload :Resources, 'miu/resources'
   autoload :Messages, 'miu/messages'
 
