@@ -29,12 +29,12 @@ module Miu
       empty_directory 'tmp/pids'
     end
 
-    desc 'list', 'Lists plugins'
+    desc 'list', 'Lists nodes'
     def list
-      table = Miu.plugins.map do |name, plugin|
-        [name, "# #{plugin.description}"]
+      table = Miu.nodes.map do |name, node|
+        [name, "# #{node.description}"]
       end
-      say 'Plugins:'
+      say 'Nodes:'
       print_table table, :indent => 2, :truncate => true
     end
 
@@ -62,13 +62,13 @@ module Miu
       publisher.send tag, body
     end
 
-    desc 'supervise', 'Supervise miu and plugins'
+    desc 'supervise', 'Supervise miu and nodes'
     def supervise(*args)
       args.unshift "-c #{Miu.default_god_config}"
       run_god *args
     end
 
-    desc 'terminate', 'Terminate miu and plugins'
+    desc 'terminate', 'Terminate miu and nodes'
     def terminate(*args)
       args.unshift "-p #{Miu.default_god_port} terminate"
       run_god *args
@@ -90,6 +90,6 @@ module Miu
   end
 end
 
-# load miu plugins
-Miu.load_plugins
+# load miu nodes
+Miu.load_nodes
 

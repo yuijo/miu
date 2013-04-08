@@ -3,14 +3,14 @@ require 'miu/cli_base'
 
 module Miu
   class Command
-    def self.new(name, plugin, options = {}, &block)
+    def self.new(name, node, options = {}, &block)
       Class.new Miu::CLIBase do
-        attr_accessor :plugin
-        @plugin = plugin
+        attr_accessor :node
+        @node = node
 
         class << self
           def source_root
-            @plugin.spec.full_gem_path rescue nil
+            @node.spec.full_gem_path rescue nil
           end
 
           def destination_root

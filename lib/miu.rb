@@ -22,8 +22,7 @@ module Miu
   autoload :Forwarder, 'miu/forwarder'
 
   autoload :Command, 'miu/command'
-  autoload :Plugin, 'miu/plugin'
-  autoload :Plugins, 'miu/plugins'
+  autoload :Node, 'miu/node'
   autoload :Type, 'miu/type'
   autoload :Resources, 'miu/resources'
   autoload :Messages, 'miu/messages'
@@ -59,23 +58,23 @@ module Miu
       @context ||= ZMQ::Context.new
     end
 
-    def plugins
-      @plugins ||= {}
+    def nodes
+      @nodes ||= {}
     end
 
-    def load_plugins
+    def load_nodes
       gems.each do |spec|
         @current_spec = spec
         require spec.name
       end
     end
 
-    def register(name, plugin, options = {}, &block)
-      plugin.spec = @current_spec
-      Miu.plugins[name] = plugin
+    def register(name, node, options = {}, &block)
+      node.spec = @current_spec
+      Miu.nodes[name] = node
       usage = options[:usage] || "#{name} [COMMAND]"
-      desc = plugin.description
-      command = Miu::Command.new name, plugin, &block
+      desc = node.description
+      command = Miu::Command.new name, node, &block
       Miu::CLI.register command, name, usage, desc
       command
     end

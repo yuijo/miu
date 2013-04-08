@@ -1,4 +1,4 @@
 module Miu
-  module Plugins
+  module Nodes
   end
 end

@@ -1,7 +1,7 @@
 require 'miu'
 
 module Miu
-  module Plugin
+  module Node
     def self.included(base)
       STDOUT.sync = true
       STDERR.sync = true
@@ -20,8 +20,8 @@ module Miu
       def register(*args, &block)
         options = Miu::Utility.extract_options!(args)
         name = args.shift
-        plugin = args.shift || self
-        Miu.register name, plugin, options, &block
+        node = args.shift || self
+        Miu.register name, node, options, &block
       end
     end
   end
