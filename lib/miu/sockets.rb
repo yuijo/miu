@@ -5,10 +5,13 @@ require 'forwardable'
 module Miu
   class Socket
     class << self
-      def socket_type(type)
-        class_eval <<-EOS
-          def socket_type; :#{type.to_s.upcase}; end
-        EOS
+      def inherited(base)
+        base.socket_type socket_type
+      end
+
+      def socket_type(type = nil)
+        @socket_type = type if type
+        @socket_type
       end
 
       def build_address(*args)
@@ -24,6 +27,10 @@ module Miu
     def initialize
       @socket = Miu.context.socket ::ZMQ.const_get(socket_type)
       @linger = 0
+    end
+
+    def socket_type
+      @type ||= self.class.socket_type.to_s.upcase.to_sym
     end
 
     def bind(address)
