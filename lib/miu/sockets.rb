@@ -89,6 +89,8 @@ module Miu
     alias_method :<<, :write
   end
 
+
+  # pub/sub
   class PubSocket < Socket
     include WritableSocket
     socket_type :pub
@@ -107,6 +109,48 @@ module Miu
     end
   end
 
+
+  # req/rep
+  class ReqSocket < Socket
+    include ReadableSocket
+    include WritableSocket
+    socket_type :req
+  end
+
+  class RepSocket < Socket
+    include ReadableSocket
+    include WritableSocket
+    socket_type :rep
+  end
+
+
+  # dealer/router
+  class DealerSocket < Socket
+    include ReadableSocket
+    include WritableSocket
+    socket_type :dealer
+  end
+
+  class RouterSocket < Socket
+    include ReadableSocket
+    include WritableSocket
+    socket_type :router
+  end
+
+
+  # push/pull
+  class PushSocket < Socket
+    include WritableSocket
+    socket_type :push
+  end
+
+  class PullSocket < Socket
+    include ReadableSocket
+    socket_type :pull
+  end
+
+
+  # xpub/xsub
   class XPubSocket < PubSocket
     socket_type :xpub
   end
