@@ -1,4 +1,4 @@
-require 'miu/socket'
+require 'miu/sockets'
 require 'miu/subscribable'
 require 'miu/utility'
 

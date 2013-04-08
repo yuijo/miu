@@ -6,11 +6,11 @@ module Miu
   autoload :CLI, 'miu/cli'
   autoload :Utility, 'miu/utility'
 
-  autoload :Socket, 'miu/socket'
-  autoload :PubSocket, 'miu/socket'
-  autoload :SubSocket, 'miu/socket'
-  autoload :XPubSocket, 'miu/socket'
-  autoload :XSubSocket, 'miu/socket'
+  autoload :Socket, 'miu/sockets'
+  autoload :PubSocket, 'miu/sockets'
+  autoload :SubSocket, 'miu/sockets'
+  autoload :XPubSocket, 'miu/sockets'
+  autoload :XSubSocket, 'miu/sockets'
 
   autoload :Server, 'miu/server'
   autoload :Packet, 'miu/packet'

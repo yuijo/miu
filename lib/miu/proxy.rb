@@ -1,4 +1,4 @@
-require 'miu/socket'
+require 'miu/sockets'
 require 'ffi-rzmq'
 
 module Miu
