@@ -14,8 +14,8 @@ module Miu
 
   autoload :Server, 'miu/server'
   autoload :Packet, 'miu/packet'
-  autoload :Publishable, 'miu/publishable'
-  autoload :Subscribable, 'miu/subscribable'
+  autoload :Writable, 'miu/writable'
+  autoload :Readable, 'miu/readable'
   autoload :Publisher, 'miu/publisher'
   autoload :Subscriber, 'miu/subscriber'
   autoload :Proxy, 'miu/proxy'

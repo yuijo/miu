@@ -2,7 +2,7 @@ require 'miu/packet'
 require 'miu/messages'
 
 module Miu
-  module Subscribable
+  module Readable
     def self.included(base)
       base.class_eval do
         def read_with_packet

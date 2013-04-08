@@ -1,5 +1,5 @@
 require 'miu/sockets'
-require 'miu/publishable'
+require 'miu/writable'
 require 'miu/utility'
 
 module Miu
@@ -12,7 +12,7 @@ module Miu
         socket = options[:socket] || PubSocket
 
         klass = Class.new(socket, &block)
-        klass.send :include, Publishable
+        klass.send :include, Writable
         klass.send :include, self
 
         klass.new.tap do |pub|

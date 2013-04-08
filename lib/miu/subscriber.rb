@@ -1,5 +1,5 @@
 require 'miu/sockets'
-require 'miu/subscribable'
+require 'miu/readable'
 require 'miu/utility'
 
 module Miu
@@ -12,7 +12,7 @@ module Miu
         socket = options[:socket] || SubSocket
 
         klass = Class.new(socket, &block)
-        klass.send :include, Subscribable
+        klass.send :include, Readable
         klass.send :include, self
 
         klass.new.tap do |sub|

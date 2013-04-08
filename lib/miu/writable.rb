@@ -1,7 +1,7 @@
 require 'miu/packet'
 
 module Miu
-  module Publishable
+  module Writable
     def self.included(base)
       base.class_eval do
         def write_with_packet(tag, message)

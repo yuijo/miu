@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Miu::Subscribable do
+describe Miu::Readable do
   class MySocket
     def read; end
-    include Miu::Subscribable
+    include Miu::Readable
   end
 
   let(:socket) { MySocket.new }

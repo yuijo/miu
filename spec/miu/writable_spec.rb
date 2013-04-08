@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe Miu::Publishable do
+describe Miu::Writable do
   class MySocket
     def write; end
-    include Miu::Publishable
+    include Miu::Writable
   end
 
   let(:socket) { MySocket.new }
