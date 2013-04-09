@@ -19,3 +19,6 @@ end
 require 'miu/messages/base'
 require 'miu/messages/unknown'
 require 'miu/messages/text'
+require 'miu/messages/enter'
+require 'miu/messages/leave'
+

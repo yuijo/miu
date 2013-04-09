@@ -29,8 +29,5 @@ module Miu
         to_hash.to_msgpack(*args)
       end
     end
-
-    class Unknown < Base
-    end
   end
 end
