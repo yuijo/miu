@@ -22,6 +22,10 @@ module Miu
       raise PacketLoadError, e
     end
 
+    def to_s
+      "<#{tag}> #{data.to_hash}"
+    end
+
     def inspect
       inspection = [:tag, :data].map do |name|
         "#{name}: #{__send__(name).inspect}"
