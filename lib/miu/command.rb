@@ -39,6 +39,19 @@ module Miu
           end
         end
 
+        no_commands do
+          def invoke_command(command, *args)
+            Miu.logger.level = ::Logger::DEBUG if options['verbose'] && Miu.logger
+            super
+          end
+        end
+
+        class_option :force, :type => :boolean, :group => :runtime, :desc => 'Overwrite files that already exist'
+        class_option :pretend, :type => :boolean, :group => :runtime, :desc => 'Run but do not make any changes'
+        class_option :verbose, :type => :boolean, :group => :runtime, :desc => 'Verbose status output'
+        class_option :quiet, :type => :boolean, :group => :runtime, :desc => 'Suppress status output'
+        class_option :skip, :type => :boolean, :group => :runtime, :desc => 'Skip files that already exist'
+
         namespace name
         class_eval &block if block
       end

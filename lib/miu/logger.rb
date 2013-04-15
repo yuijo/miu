@@ -33,6 +33,7 @@ module Miu
     attr_accessor :default_logger
     attr_accessor :logger
   end
+
   self.default_logger = ::Logger.new(STDERR)
   self.logger = self.default_logger
   self.logger.level = ::Logger::INFO
