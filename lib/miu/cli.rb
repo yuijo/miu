@@ -54,10 +54,9 @@ module Miu
     desc 'cat TAG ROOM TEXT', 'Okaka kakeyoune'
     option 'host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
     option 'port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu sub port'
-    option 'network', :type => :string, :default => 'debug', :desc => 'miu network name'
+    option 'network', :type => :string, :default => 'cat', :desc => 'miu network name'
     def cat(tag, room, text)
       require 'miu/messages'
-      require 'json'
       publisher = Miu::Publisher.new :host => options[:host], :port => options[:port]
       message = Miu::Messages::Text.new do |m|
         m.network.name = options[:network]
