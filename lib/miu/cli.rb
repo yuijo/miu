@@ -85,6 +85,12 @@ module Miu
       run_god *args
     end
 
+    desc 'reload', 'Reload god config'
+    def reload(*args)
+      args.unshift "-p #{Miu.default_god_port} load #{Miu.default_god_config}"
+      run_god *args
+    end
+
     desc 'god [ARGS]', 'Miu is a god'
     def god(*args)
       args.unshift "-p #{Miu.default_god_port}"
