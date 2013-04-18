@@ -30,23 +30,23 @@ module Miu
   class << self
     def root
       require 'pathname'
-      @root ||= Pathname.new(Dir.pwd)
+      Pathname.new(ENV['MIU_ROOT'] || Dir.pwd)
     end
 
     def default_port
       Integer(ENV['MIU_DEFAULT_PORT']) rescue  22200
     end
 
-    def default_god_port
-      default_port
-    end
-
     def default_pub_port
-      default_port + 1
+      default_port + 0
     end
 
     def default_sub_port
-      default_port + 2
+      default_port + 1
+    end
+
+    def default_god_port
+      default_port + 3
     end
 
     def default_god_config

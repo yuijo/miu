@@ -44,6 +44,11 @@ module Miu
             Miu.logger.level = ::Logger::DEBUG if options['verbose'] && Miu.logger
             super
           end
+
+          def config(data = nil, &block)
+            data = block.call if !data && block
+            append_to_file Miu.root.join(Miu.default_god_config), "\n#{data}"
+          end
         end
 
         class_option :force, :type => :boolean, :group => :runtime, :desc => 'Overwrite files that already exist'

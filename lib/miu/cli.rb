@@ -38,7 +38,7 @@ module Miu
       print_table table, :indent => 2, :truncate => true
     end
 
-    desc 'start', 'Start miu server'
+    desc 'server', 'Start miu server'
     option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'pub host'
     option 'pub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'pub port'
     option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'sub host'
@@ -46,7 +46,7 @@ module Miu
     option 'bridge-host', :type => :string, :default => '127.0.0.1', :desc => 'bridge host'
     option 'bridge-port', :type => :numeric, :desc => 'bridge port'
     option 'verbose', :type => :boolean, :default => false, :desc => 'verbose output', :aliases => '-V'
-    def start
+    def server
       server = Miu::Server.new Miu::Utility.optionify_keys(options)
       server.run
     end
@@ -72,36 +72,74 @@ module Miu
       Miu::Logger.exception e
     end
 
-    desc 'supervise', 'Supervise miu and nodes'
+    desc 'supervise', 'Supervise nodes'
     def supervise(*args)
-      args.unshift "-c #{Miu.default_god_config}"
-      run_god *args
+      args.unshift(
+        'god',
+        "-c #{Miu.root.join(Miu.default_god_config)}",
+        "-l #{Miu.root.join('log/god.log')}",
+        '--no-syslog',
+        '--no-events',
+      )
+      run args.join(' '), :verbose => false
     end
 
-    desc 'terminate', 'Terminate miu and nodes'
+    desc 'terminate', 'Terminate nodes'
     def terminate(*args)
-      args.unshift "-p #{Miu.default_god_port} terminate"
+      args.unshift 'terminate'
       run_god *args
     end
 
-    desc 'reload', 'Reload god config'
+    desc 'start NODE', 'Start specified node'
+    def start(*args)
+      args.unshift 'start'
+      run_god *args
+    end
+
+    desc 'stop NODE', 'Stop specified node'
+    def stop(*args)
+      args.unshift 'stop'
+      run_god *args
+    end
+
+    desc 'restart NODE', 'Restart specified node'
+    def restart(*args)
+      args.unshift 'restart'
+      run_god *args
+    end
+
+    desc 'monitor NODE', 'Monitor specified node'
+    def monitor(*args)
+      args.unshift 'monitor'
+      run_god *args
+    end
+
+    desc 'unmonitor NODE', 'Unmonitor specified node'
+    def unmonitor(*args)
+      args.unshift 'unmonitor'
+      run_god *args
+    end
+
+    desc 'status [NODE]', 'Show status of the specified node or all nodes'
+    def status(*args)
+      args.unshift 'status'
+      run_god *args
+    end
+
+    desc 'reload', 'Reload config file'
     def reload(*args)
-      args.unshift "-p #{Miu.default_god_port} load #{Miu.default_god_config}"
-      run_god *args
-    end
-
-    desc 'god [ARGS]', 'Miu is a god'
-    def god(*args)
-      args.unshift "-p #{Miu.default_god_port}"
+      args.unshift "load #{Miu.root.join(Miu.default_god_config)}"
       run_god *args
     end
 
     private
 
     def run_god(*args)
-      require 'god'
-      args.unshift 'god'
-      run args.join(' ')
+      args.unshift(
+        'god',
+        "-p #{Miu.default_god_port}",
+      )
+      run args.join(' '), :verbose => false
     end
   end
 end
