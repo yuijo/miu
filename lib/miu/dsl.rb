@@ -22,6 +22,7 @@ module Miu
         w.dir = Miu.root
         w.log = Miu.root.join("log/#{name}.log").to_s
         w.name = name
+        w.group = 'all'
 
         yield w if block_given?
 

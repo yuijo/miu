@@ -88,39 +88,39 @@ module Miu
       run_god *args
     end
 
-    desc 'start NODE', 'Start specified node'
-    def start(*args)
-      args.unshift 'start'
+    desc 'start [NODE]', 'Start specified node or all nodes'
+    def start(node = :all, *args)
+      args.unshift 'start', node
       run_god *args
     end
 
-    desc 'stop NODE', 'Stop specified node'
-    def stop(*args)
-      args.unshift 'stop'
+    desc 'stop [NODE]', 'Stop specified node or all nodes'
+    def stop(node = :all, *args)
+      args.unshift 'stop', node
       run_god *args
     end
 
-    desc 'restart NODE', 'Restart specified node'
-    def restart(*args)
-      args.unshift 'restart'
+    desc 'restart [NODE]', 'Restart specified node or all nodes'
+    def restart(node = :all, *args)
+      args.unshift 'restart', node
       run_god *args
     end
 
-    desc 'monitor NODE', 'Monitor specified node'
-    def monitor(*args)
-      args.unshift 'monitor'
+    desc 'monitor [NODE]', 'Monitor specified node or all nodes'
+    def monitor(node = :all, *args)
+      args.unshift 'monitor', node
       run_god *args
     end
 
-    desc 'unmonitor NODE', 'Unmonitor specified node'
-    def unmonitor(*args)
-      args.unshift 'unmonitor'
+    desc 'unmonitor [NODE]', 'Unmonitor specified node or all nodes'
+    def unmonitor(node = :all, *args)
+      args.unshift 'unmonitor', node
       run_god *args
     end
 
     desc 'status [NODE]', 'Show status of the specified node or all nodes'
-    def status(*args)
-      args.unshift 'status'
+    def status(node = :all, *args)
+      args.unshift 'status', node
       run_god *args
     end
 
