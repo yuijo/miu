@@ -1,9 +1,10 @@
 require 'miu'
-require 'miu/cli_base'
 
 module Miu
   class Command
     def self.new(name, node, options = {}, &block)
+      require 'miu/cli_base'
+
       Class.new Miu::CLIBase do
         attr_accessor :node
         @node = node
