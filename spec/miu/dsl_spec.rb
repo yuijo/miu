@@ -11,7 +11,7 @@ describe Miu do
   describe 'watch' do
     let(:watch) do
       Class.new do
-        attr_accessor :dir, :log, :name
+        attr_accessor :dir, :log, :name, :group
         attr_accessor :start, :stop, :restart
       end.new
     end
