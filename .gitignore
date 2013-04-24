@@ -18,5 +18,5 @@ tmp
 vendor
 db
 log
-config
+/config
 

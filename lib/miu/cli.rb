@@ -6,7 +6,7 @@ module Miu
   class CLI < CLIBase
     class << self
       def source_root
-        File.expand_path('../../templates', __FILE__)
+        File.expand_path('../templates', __FILE__)
       end
 
       def destination_root
@@ -22,9 +22,7 @@ module Miu
 
     desc 'init', 'Generates a miu configuration files'
     def init
-      inside 'config' do
-        template 'miu.god'
-      end
+      directory 'config'
       empty_directory 'log'
       empty_directory 'tmp/pids'
     end
