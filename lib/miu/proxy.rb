@@ -9,8 +9,8 @@ module Miu
     PROXY_TO = '@__proxy_to__'
 
     def initialize(frontends, backends)
-      @frontends = Array(frontends).map { |s| unwrap s }
-      @backends = Array(backends).map { |s| unwrap s }
+      @frontends = Array(frontends).map { |s| s.to_io rescue s }
+      @backends = Array(backends).map { |s| s.to_io rescue s }
 
       @frontends.each { |s| s.instance_variable_set PROXY_TO, @backends }
       @backends.each { |s| s.instance_variable_set PROXY_TO, @frontends }
@@ -40,17 +40,6 @@ module Miu
             break unless more
           end
         end
-      end
-    end
-
-    private
-
-    def unwrap(socket)
-      case socket
-      when Miu::Socket
-        socket.socket
-      else
-        socket
       end
     end
   end

@@ -50,6 +50,10 @@ module Miu
       @socket.close
     end
 
+    def to_io
+      @socket
+    end
+
     protected
 
     def error_wrapper(source = nil, &block)
