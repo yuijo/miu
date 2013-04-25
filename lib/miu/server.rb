@@ -15,13 +15,7 @@ module Miu
       Logger.info "Publish on #{@options[:pub_host]}:#{@options[:pub_port]}"
       Logger.info "Subscribe on #{@options[:sub_host]}:#{@options[:sub_port]}"
 
-      [:INT, :TERM].each do |sig|
-        trap(sig) do
-          Logger.info "Quit"
-          close
-          exit
-        end
-      end
+      register_signal_handlers
 
       @forwarder = Forwarder.new @options
       @forwarder.run
@@ -31,6 +25,19 @@ module Miu
 
     def close
       @forwarder.close
+    end
+
+    def register_signal_handlers
+      %w(INT TERM HUP QUIT).each do |sig|
+        trap(sig) do
+          close
+          exit
+        end
+      end
+
+      at_exit do
+        Logger.info 'Quit...'
+      end
     end
   end
 end
