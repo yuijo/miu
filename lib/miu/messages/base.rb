@@ -17,16 +17,16 @@ module Miu
         yield self if block_given?
       end
 
-      def to_hash
+      def to_h
         {
-          :network => @network.to_hash,
+          :network => @network.to_h,
           :type => @type,
-          :content => @content ? @content.to_hash : {}
+          :content => @content ? @content.to_h : {}
         }
       end
 
       def to_msgpack(*args)
-        to_hash.to_msgpack(*args)
+        to_h.to_msgpack(*args)
       end
     end
   end

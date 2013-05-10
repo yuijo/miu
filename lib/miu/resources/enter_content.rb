@@ -11,10 +11,10 @@ module Miu
         super options
       end
 
-      def to_hash
+      def to_h
         super.merge({
-          :room => @room.to_hash,
-          :user => @user.to_hash,
+          :room => @room.to_h,
+          :user => @user.to_h,
         })
       end
     end

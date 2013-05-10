@@ -32,8 +32,8 @@ describe Miu::Messages::Base do
     end
   end
 
-  describe '#to_hash' do
-    let(:hash) { Miu::Messages::Base.new(:type => 'test').to_hash }
+  describe '#to_h' do
+    let(:hash) { Miu::Messages::Base.new(:type => 'test').to_h }
 
     it { expect(hash).to be_instance_of ::Hash }
     it { expect(hash).to have_key :network }

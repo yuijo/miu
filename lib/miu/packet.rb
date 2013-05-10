@@ -23,7 +23,7 @@ module Miu
     end
 
     def to_s
-      "<#{tag}> #{data.to_hash}"
+      "<#{tag}> #{data.to_h}"
     end
 
     def inspect

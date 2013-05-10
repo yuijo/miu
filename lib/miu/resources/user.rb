@@ -9,7 +9,7 @@ module Miu
         @name = options[:name]
       end
 
-      def to_hash
+      def to_h
         super.merge({:name => @name})
       end
     end

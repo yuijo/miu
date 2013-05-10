@@ -10,7 +10,7 @@ module Miu
         @meta = options[:meta] || {}
       end
 
-      def to_hash
+      def to_h
         super.merge({:meta => @meta})
       end
     end
