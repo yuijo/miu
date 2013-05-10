@@ -23,15 +23,17 @@ module Miu
           end
 
           def add_miu_pub_options(name)
+            tag = ['miu', 'input', name].select { |s| s && !s.empty? }.join('.') + '.'
             option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu pub host'
             option 'pub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu pub port'
-            option 'pub-tag', :type => :string, :default => "miu.input.#{name}.", :desc => 'miu pub tag'
+            option 'pub-tag', :type => :string, :default => tag, :desc => 'miu pub tag'
           end
 
           def add_miu_sub_options(name)
+            tag = ['miu', 'output', name].select { |s| s && !s.empty? }.join('.') + '.'
             option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
             option 'sub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'miu sub port'
-            option 'sub-tag', :type => :string, :default => "miu.output.#{name}.", :desc => 'miu sub tag'
+            option 'sub-tag', :type => :string, :default => tag, :desc => 'miu sub tag'
           end
 
           def add_miu_pub_sub_options(name)
