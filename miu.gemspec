@@ -1,27 +1,28 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'miu/version'
 
-Gem::Specification.new do |gem|
-  gem.name          = "miu"
-  gem.version       = Miu::VERSION
-  gem.authors       = ["mashiro"]
-  gem.email         = ["mail@mashiro.org"]
-  gem.description   = %q{miu miu}
-  gem.summary       = %q{miu miu}
-  gem.homepage      = ""
+Gem::Specification.new do |spec|
+  spec.name          = 'miu'
+  spec.version       = Miu::VERSION
+  spec.authors       = ['mashiro']
+  spec.email         = ['mail@mashiro.org']
+  spec.description   = %q{Miu message hub}
+  spec.summary       = spec.description
+  spec.homepage      = 'https://github.com/yuijo/miu'
+  spec.license       = 'MIT'
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib"]
+  spec.files         = `git ls-files`.split($/)
+  spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
+  spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
+  spec.require_paths = ["lib"]
 
-  gem.add_dependency 'thor', '>= 0.18.1'
-  gem.add_dependency 'god', '>= 0.13.2'
-  gem.add_dependency 'ffi-rzmq', '>= 1.0.0'
-  gem.add_dependency 'msgpack', '>= 0.5.4'
-  gem.add_development_dependency 'rake', '>= 10.0.4'
-  gem.add_development_dependency 'rspec', '>= 2.13.0'
-  gem.add_development_dependency 'celluloid-zmq', '>= 0.13.0'
+  spec.add_dependency 'thor', '>= 0.18.1'
+  spec.add_dependency 'god', '>= 0.13.2'
+  spec.add_dependency 'ffi-rzmq', '>= 1.0.0'
+  spec.add_dependency 'msgpack', '>= 0.5.4'
+  spec.add_development_dependency 'rake', '>= 10.0.4'
+  spec.add_development_dependency 'rspec', '>= 2.13.0'
+  spec.add_development_dependency 'celluloid-zmq', '>= 0.13.0'
 end
