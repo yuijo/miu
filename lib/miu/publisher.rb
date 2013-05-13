@@ -13,13 +13,41 @@ module Miu
 
         klass = Class.new(socket, &block)
         klass.send :include, Writable
-        klass.send :include, self
 
         klass.new.tap do |pub|
           address = Miu::Socket.build_address host, port
           pub.connect address
         end
       end
+
+      def included(base)
+        base.extend ClassMethods
+      end
+    end
+
+    module ClassMethods
+      def socket_type(socket = nil)
+        if socket
+          @socket_type = socket
+        else
+          @socket_type
+        end
+      end
+    end
+
+    attr_reader :publisher
+
+    def initialize(host, port, tag)
+      @publisher = Miu::Publisher.new host, port, :socket => self.class.socket_type
+      @tag = tag
+    end
+
+    def close
+      @publisher.close
+    end
+
+    def write(message)
+      @publisher.write @tag, message
     end
   end
 end

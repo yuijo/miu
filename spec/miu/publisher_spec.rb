@@ -24,4 +24,20 @@ describe Miu::Publisher do
       let(:base) { MyPubSocket }
     end
   end
+
+  context 'include' do
+    before do
+      publisher = stub(Miu::Publisher)
+      Miu::Publisher.stub!(:new).and_return(publisher)
+
+      @klass = Class.new do
+        include Miu::Publisher
+        socket_type Miu::PubSocket
+      end
+    end
+
+    describe '#socket_type' do
+      it { expect(@klass.socket_type).to eq Miu::PubSocket }
+    end
+  end
 end
