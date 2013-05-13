@@ -20,7 +20,6 @@ describe Miu::Command do
     its(:namespace) { should eq 'test_node' }
     it { should respond_to :add_miu_pub_options }
     it { should respond_to :add_miu_sub_options }
-    it { should respond_to :add_miu_pub_sub_options }
     it { should respond_to :hello }
   end
 end
