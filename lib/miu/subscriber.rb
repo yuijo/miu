@@ -70,7 +70,7 @@ module Miu
 
     def on_packet(packet)
       name = method_name packet
-      __send__ name, packet.tag, packet.data if respond_to?(name)
+      __send__ name, packet.tag, packet.data if respond_to?(name, true)
     end
 
     def method_name(packet)
