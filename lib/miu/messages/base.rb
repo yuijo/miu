@@ -19,6 +19,8 @@ module Miu
 
       def to_h
         {
+          :id => @id,
+          :time => @time,
           :network => @network.to_h,
           :type => @type,
           :content => @content ? @content.to_h : {}

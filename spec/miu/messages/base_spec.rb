@@ -36,6 +36,8 @@ describe Miu::Messages::Base do
     let(:hash) { Miu::Messages::Base.new(:type => 'test').to_h }
 
     it { expect(hash).to be_instance_of ::Hash }
+    it { expect(hash).to have_key :id }
+    it { expect(hash).to have_key :time }
     it { expect(hash).to have_key :network }
     it { expect(hash).to have_key :type }
     it { expect(hash).to have_key :content }
