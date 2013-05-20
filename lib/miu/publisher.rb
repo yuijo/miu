@@ -37,9 +37,9 @@ module Miu
 
     attr_reader :publisher
 
-    def initialize(host, port, tag)
-      @publisher = Miu::Publisher.new host, port, :socket => self.class.socket_type
-      @tag = tag
+    def initialize(topic, *args)
+      @publisher = Miu::Publisher.new *args, :socket => self.class.socket_type
+      @topic = topic
     end
 
     def close
@@ -47,7 +47,7 @@ module Miu
     end
 
     def write(message)
-      @publisher.write @tag, message
+      @publisher.write @topic, message
     end
   end
 end

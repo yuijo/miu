@@ -3,31 +3,31 @@ require 'msgpack'
 
 module Miu
   class Packet
-    attr_accessor :tag, :data
+    attr_accessor :topic, :data
 
-    def initialize(tag, data)
-      @tag = tag
+    def initialize(topic, data)
+      @topic = topic
       @data = data
     end
 
     def dump
-      [@tag.to_s, @data.to_msgpack]
+      [@topic.to_s, @data.to_msgpack]
     end
 
     def self.load(parts)
-      tag = parts[0]
+      topic = parts[0]
       data = MessagePack.unpack(parts[1])
-      new tag, data
+      new topic, data
     rescue => e
       raise PacketLoadError, e
     end
 
     def to_s
-      "<#{tag}> #{data.to_h}"
+      "<#{topic}> #{data.to_h}"
     end
 
     def inspect
-      inspection = [:tag, :data].map do |name|
+      inspection = [:topic, :data].map do |name|
         "#{name}: #{__send__(name).inspect}"
       end.join(', ')
       "#<#{self.class} #{inspection}>"

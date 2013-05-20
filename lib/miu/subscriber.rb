@@ -37,23 +37,24 @@ module Miu
 
     attr_reader :subscriber
 
-    def initialize(host, port, tag)
-      @subscriber = Miu::Subscriber.new host, port, :socket => self.class.socket_type
-      self.tag = tag
+    def initialize(topic, *args)
+      options = Miu::Utility.extract_options! args
+      @subscriber = Miu::Subscriber.new *args, :socket => self.class.socket_type
+      self.topic = topic
     end
 
     def close
       @subscriber.close
     end
 
-    def tag=(value)
-      @subscriber.unsubscribe @tag if @tag
+    def topic=(value)
+      @subscriber.unsubscribe @topic if @topic
       @subscriber.subscribe value
-      @tag = value
+      @topic = value
     end
 
-    def tag
-      @tag
+    def topic
+      @topic
     end
 
     def run
@@ -70,7 +71,7 @@ module Miu
 
     def on_packet(packet)
       name = method_name packet
-      __send__ name, packet.tag, packet.data if respond_to?(name, true)
+      __send__ name, packet.topic, packet.data if respond_to?(name, true)
     end
 
     def method_name(packet)

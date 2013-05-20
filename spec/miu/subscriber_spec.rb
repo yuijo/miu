@@ -43,10 +43,10 @@ describe Miu::Subscriber do
     end
 
     describe '#method_name' do
-      let(:subscriber) { @klass.new 'dummy', 1234, 'tag' }
-      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('tag', Miu::Messages::Text.new)).to eq 'on_text' }
-      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('tag', Miu::Messages::Enter.new)).to eq 'on_enter' }
-      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('tag', Miu::Messages::Leave.new)).to eq 'on_leave' }
+      let(:subscriber) { @klass.new 'dummy', 1234, 'topic' }
+      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('topic', Miu::Messages::Text.new)).to eq 'on_text' }
+      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('topic', Miu::Messages::Enter.new)).to eq 'on_enter' }
+      it { expect(subscriber.__send__ :method_name, Miu::Packet.new('topic', Miu::Messages::Leave.new)).to eq 'on_leave' }
     end
   end
 end
