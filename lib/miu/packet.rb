@@ -6,12 +6,19 @@ module Miu
     attr_accessor :topic, :data
 
     def initialize(topic, data)
-      @topic = topic
+      @topic = topic.to_s
       @data = data
     end
 
+    def to_h
+      {
+        :topic => @topic,
+        :data => @data.to_h
+      }
+    end
+
     def dump
-      [@topic.to_s, @data.to_msgpack]
+      [@topic, @data.to_msgpack]
     end
 
     def self.load(parts)
