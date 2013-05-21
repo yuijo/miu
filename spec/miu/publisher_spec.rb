@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'celluloid/zmq'
 
 describe Miu::Publisher do
   context 'miu socket' do

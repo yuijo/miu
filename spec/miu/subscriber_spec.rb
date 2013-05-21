@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'celluloid/zmq'
 
 describe Miu::Subscriber do
   context 'miu socket' do
