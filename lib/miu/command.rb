@@ -22,13 +22,13 @@ module Miu
             super task, namespace, subcommand || options.fetch(:subcommand, true)
           end
 
-          def add_miu_pub_options(topic)
+          def add_miu_pub_options(topic = nil)
             option 'pub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu pub host'
             option 'pub-port', :type => :numeric, :default => Miu.default_sub_port, :desc => 'miu pub port'
             option 'pub-topic', :type => :string, :default => topic, :desc => 'miu pub topic'
           end
 
-          def add_miu_sub_options(topic)
+          def add_miu_sub_options(topic = nil)
             option 'sub-host', :type => :string, :default => '127.0.0.1', :desc => 'miu sub host'
             option 'sub-port', :type => :numeric, :default => Miu.default_pub_port, :desc => 'miu sub port'
             option 'sub-topic', :type => :string, :default => topic, :desc => 'miu sub topic'
