@@ -8,6 +8,8 @@ module Miu
 
       def initialize(options = {})
         @name = options[:name]
+        @input = options[:input]
+        @output = options[:output]
         super
       end
 
