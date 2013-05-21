@@ -16,7 +16,12 @@ module Miu
           begin
             data = Miu::Utility.symbolize_keys(packet.data, true) rescue packet.data
             type = data[:type] rescue nil
-            message_class = Miu::Messages.guess(type)
+
+            message_class = Miu::Messages.guess type
+            if message_class == Miu::Messages::Unknown
+              data = {:content => {:value => data}}
+            end
+
             packet.data = message_class.new data
             packet
           rescue => e

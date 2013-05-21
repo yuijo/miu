@@ -34,7 +34,7 @@ module Miu
           :time => @time,
           :network => @network.to_h,
           :type => @type,
-          :content => @content ? @content.to_h : {}
+          :content => @content.respond_to?(:to_h) ? @content.to_h : @content
         }
       end
 

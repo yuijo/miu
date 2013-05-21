@@ -28,7 +28,7 @@ describe Miu::Readable do
 
       it { expect(packet.topic).to eq 'topic' }
       it { expect(packet.data).to be_instance_of Miu::Messages::Unknown }
-      it { expect(packet.data.content).to eq 'data' }
+      it { expect(packet.data.content.value).to eq 'data' }
     end
 
     context 'valid data' do

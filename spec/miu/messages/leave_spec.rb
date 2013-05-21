@@ -1,35 +1,11 @@
 require 'spec_helper'
 
 describe Miu::Messages::Leave do
-  describe '#initialize' do
-    context 'no args' do
-      before do
-        @msg = Miu::Messages::Leave.new
-      end
-      subject { @msg }
+  it_should_behave_like 'a Miu message', described_class
 
-      its(:id) { should be_instance_of String }
-      its(:time) { should be_instance_of Fixnum }
-      its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should eq 'leave' }
-    end
-
-    context 'with args' do
-      before do
-        @msg = Miu::Messages::Leave.new({
-          :id => 123,
-          :time => 123,
-          :network => {:name => 'test'},
-          :content => {},
-        })
-      end
-      subject { @msg }
-
-      its(:id) { should eq 123 }
-      its(:time) { should eq 123 }
-      its(:network) { should be_instance_of Miu::Resources::Network }
-      its(:type) { should eq 'leave' }
-      its(:content) { should be_instance_of Miu::Resources::LeaveContent }
-    end
+  it 'is the specialized' do
+    msg = described_class.new
+    expect(msg.type).to eq 'leave'
+    expect(msg.content).to be_instance_of Miu::Resources::LeaveContent
   end
 end

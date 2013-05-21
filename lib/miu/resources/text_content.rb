@@ -2,7 +2,7 @@ require 'miu/resources'
 
 module Miu
   module Resources
-    class TextContent < Content
+    class TextContent < MetaContent
       attr_accessor :room, :user, :text
 
       def initialize(options = {})

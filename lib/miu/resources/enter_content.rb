@@ -2,7 +2,7 @@ require 'miu/resources'
 
 module Miu
   module Resources
-    class EnterContent < Content
+    class EnterContent < MetaContent
       attr_accessor :room, :user
 
       def initialize(options = {})
