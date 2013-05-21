@@ -1,6 +1,6 @@
 # Miu [![Build Status](https://travis-ci.org/yuijo/miu.png?branch=master)](https://travis-ci.org/yuijo/miu)
 
-TODO: Write a gem description
+「ねぇ、新吾くん。蛇口が壊れた水道って、どうなるか知ってる？」
 
 ## Installation
 
