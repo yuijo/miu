@@ -1,6 +1,5 @@
 require 'miu/messages'
 require 'msgpack'
-require 'securerandom'
 
 module Miu
   module Messages
@@ -8,9 +7,21 @@ module Miu
       attr_accessor :id, :time
       attr_accessor :network, :type, :content
 
+      class << self
+        def uuid
+          require 'securerandom'
+          SecureRandom.uuid
+        end
+
+        def now
+          require 'time'
+          Time.now.to_i
+        end
+      end
+
       def initialize(options = {})
-        @id = options[:id] || SecureRandom.uuid
-        @time = options[:time] || Time.now.to_i
+        @id = options[:id] || self.class.uuid
+        @time = options[:time] || self.class.now
         @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
         @type = options[:type]
         @content = options[:content]
