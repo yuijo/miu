@@ -3,7 +3,6 @@ require 'miu/resources'
 module Miu
   module Resources
     class Content < Base
-      attr_accessor :raw
       attr_accessor :meta
 
       def initialize(options = {})
