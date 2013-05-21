@@ -7,6 +7,7 @@ module Miu
 
       def initialize(options = {})
         @meta = options[:meta] || {}
+        super
       end
 
       def to_h

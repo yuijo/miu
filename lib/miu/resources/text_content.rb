@@ -9,7 +9,7 @@ module Miu
         @room = Miu::Utility.adapt(Room, options[:room] || {})
         @user = Miu::Utility.adapt(User, options[:user] || {})
         @text = options[:text]
-        super options
+        super
       end
 
       def to_h

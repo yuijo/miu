@@ -3,6 +3,9 @@ require 'msgpack'
 module Miu
   module Resources
     class Base
+      def initialize(options = {})
+      end
+
       def to_h
         {}
       end
