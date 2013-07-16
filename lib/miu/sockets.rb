@@ -24,8 +24,15 @@ module Miu
     attr_reader :socket
     attr_reader :linger
 
+    if ::ZMQ::LibZMQ.version2?
+      SOCKET_TYPE_ALIAS = {XPUB: :PUB, XSUB: :SUB}
+    else
+      SOCKET_TYPE_ALIAS = {}
+    end
+
     def initialize
-      @socket = Miu.context.socket ::ZMQ.const_get(socket_type)
+      type = SOCKET_TYPE_ALIAS[socket_type] || socket_type
+      @socket = Miu.context.socket ::ZMQ.const_get(type)
       @linger = 0
     end
 
