@@ -15,6 +15,7 @@ shared_examples 'a Miu message' do |message_class|
           :time => 123,
           :network => {:name => 'bbb'},
           :type => 'ccc',
+          :meta => {:ddd => :eee}
         })
       end
 
@@ -25,6 +26,7 @@ shared_examples 'a Miu message' do |message_class|
         expect(msg.time).to eq 123
         expect(msg.network.name).to eq 'bbb'
         expect(msg.type).to eq 'ccc'
+        expect(msg.meta).to eq({:ddd => :eee})
       end
     end
   end
@@ -39,7 +41,7 @@ shared_examples 'a Miu message' do |message_class|
       expect(hash).to have_key :time
       expect(hash).to have_key :network
       expect(hash).to have_key :type
-      expect(hash).to have_key :content
+      expect(hash).to have_key :meta
     end
   end
 end
@@ -50,6 +52,6 @@ shared_examples 'a Miu message have valid attributes' do
     expect(msg.time).to be_instance_of Fixnum
     expect(msg.network).to be_instance_of Miu::Resources::Network
     expect(msg).to be_respond_to :type
-    expect(msg).to be_respond_to :content
+    expect(msg).to be_respond_to :meta
   end
 end

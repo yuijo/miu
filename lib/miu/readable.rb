@@ -19,7 +19,7 @@ module Miu
 
             message_class = Miu::Messages.guess type
             if message_class == Miu::Messages::Unknown
-              data = {:content => {:value => data}}
+              data = {:value => data}
             end
 
             packet.data = message_class.new data

@@ -5,7 +5,7 @@ module Miu
   module Messages
     class Base
       attr_accessor :id, :time
-      attr_accessor :network, :type, :content
+      attr_accessor :network, :type, :meta
 
       class << self
         def uuid
@@ -24,7 +24,7 @@ module Miu
         @time = options[:time] || self.class.now
         @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
         @type = options[:type]
-        @content = options[:content]
+        @meta = options[:meta] || {}
         yield self if block_given?
       end
 
@@ -34,7 +34,7 @@ module Miu
           :time => @time,
           :network => @network.to_h,
           :type => @type,
-          :content => @content.respond_to?(:to_h) ? @content.to_h : @content
+          :meta => @meta
         }
       end
 
