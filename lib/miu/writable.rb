@@ -4,8 +4,8 @@ module Miu
   module Writable
     def self.included(base)
       base.class_eval do
-        def write_with_packet(tckag, message)
-          packet = Packet.new tckag, message
+        def write_with_packet(tag, message)
+          packet = Packet.new tag, message
           write_without_packet *packet.dump
           packet
         end
