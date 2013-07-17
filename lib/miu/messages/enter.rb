@@ -8,8 +8,8 @@ module Miu
 
       def initialize(options = {})
         options[:type] ||= 'enter'
-        @room = Utility.adapt(Resources::Room, options[:room] || {})
-        @user = Utility.adapt(Resources::User, options[:user] || {})
+        @room = Miu::Utility.adapt(Miu::Resources::Room, options[:room] || {})
+        @user = Miu::Utility.adapt(Miu::Resources::User, options[:user] || {})
         super 
       end
 

@@ -22,7 +22,7 @@ module Miu
       def initialize(options = {})
         @id = options[:id] || self.class.uuid
         @time = options[:time] || self.class.now
-        @network = Miu::Utility.adapt(Resources::Network, options[:network] || {})
+        @network = Miu::Utility.adapt(Miu::Resources::Network, options[:network] || {})
         @type = options[:type]
         @meta = options[:meta] || {}
         yield self if block_given?
