@@ -58,10 +58,8 @@ module Miu
       publisher = Miu::Publisher.new :host => options[:host], :port => options[:port]
       message = Miu::Messages::Text.new do |m|
         m.network.name = options[:network]
-        m.content.tap do |c|
-          c.room.name = room
-          c.text = text
-        end
+        m.room.name = room
+        m.text = text
       end
 
       packet = publisher.write topic, message

@@ -28,17 +28,17 @@ describe Miu::Readable do
 
       it { expect(packet.topic).to eq 'topic' }
       it { expect(packet.data).to be_instance_of Miu::Messages::Unknown }
-      it { expect(packet.data.content.value).to eq 'data' }
+      it { expect(packet.data.value).to eq 'data' }
     end
 
     context 'valid data' do
       let(:topic) { 'topic' }
-      let(:data) { Miu::Messages::Text.new(:content => {:text => 'test'}) }
+      let(:data) { Miu::Messages::Text.new(:text => 'test') }
       let(:packet) { socket.read }
 
       it { expect(packet.topic).to eq 'topic' }
       it { expect(packet.data).to be_instance_of Miu::Messages::Text }
-      it { expect(packet.data.content.text).to eq 'test' }
+      it { expect(packet.data.text).to eq 'test' }
     end
   end
 end
