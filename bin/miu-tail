@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+require 'slop'
+require 'miu'
+require 'miu/ext/slop'
+
+options = Slop.parse do |o|
+  o.addresses '-A', '--bind', 'address to bind to the socket'
+  o.addresses '-a', '--connect', "address to connect to the socket (default: #{Miu::DEFAULT_BACKEND_ADDRESS})", default: [Miu::DEFAULT_BACKEND_ADDRESS]
+  o.string '-t', '--topic', "topic for subscribes (default: '')", default: ''
+  o.separator ''
+
+  o.integer '-i', '--io-threads'
+  o.integer '-s', '--max-sockets'
+  o.separator ''
+
+  o.on '-v', '--version', 'print version and exit' do
+    puts Miu::VERSION
+    exit
+  end
+  o.on '-h', '--help', 'show this message' do
+    puts o
+    exit
+  end
+end
+
+begin
+  Miu::Tail.start({
+    bind: options[:'bind'],
+    connect: options[:'connect'],
+    topic: options[:'topic'],
+    io_threads: options[:'io_threads'],
+    max_sockets: options[:'max-sockets'],
+  })
+rescue Interrupt
+end
+

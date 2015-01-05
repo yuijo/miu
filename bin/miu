@@ -1,4 +1,18 @@
-#!/usr/bin/env ruby
-# -*- encoding: utf-8 -*-
-require 'miu/cli'
-Miu::CLI.start
+#!/bin/bash
+
+SUB=$1
+shift
+
+if [ -z $SUB ]; then
+    echo "usage: miu <command> [<args>]"
+    exit 1
+fi
+
+CMD="miu-$SUB"
+if $(which $CMD > /dev/null 2>&1); then
+    exec $CMD $@
+else
+    echo "miu: '$CMD' is not a miu command."
+    exit 1
+fi
+

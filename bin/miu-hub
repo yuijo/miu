@@ -1,0 +1,42 @@
+#!/usr/bin/env ruby
+require 'slop'
+require 'miu'
+require 'miu/ext/slop'
+
+options = Slop.parse do |o|
+  o.addresses '-F', '--bind-frontend', "address to bind to the frontend (default: #{Miu::DEFAULT_FRONTEND_ADDRESS})", default: [Miu::DEFAULT_FRONTEND_ADDRESS]
+  o.addresses '-f', '--connect-frontend', 'address to connect to the frontend'
+  o.addresses '-B', '--bind-backend', "address to bind to the backend (default: #{Miu::DEFAULT_BACKEND_ADDRESS})", default: [Miu::DEFAULT_BACKEND_ADDRESS]
+  o.addresses '-b', '--connect-backend', 'address to connect to the backend'
+  o.separator ''
+
+  o.integer '-i', '--io-threads'
+  o.integer '-s', '--max-sockets'
+  o.separator ''
+
+  o.on '-v', '--version', 'print version and exit' do
+    puts Miu::VERSION
+    exit
+  end
+  o.on '-h', '--help', 'show this message' do
+    puts o
+    exit
+  end
+end
+
+begin
+  Miu::Hub.start({
+    frontend: {
+      bind: options[:'bind-frontend'],
+      connect: options[:'connect-frontend'],
+    },
+    backend: {
+      bind: options[:'bind-backend'],
+      connect: options[:'connect-backend'],
+    },
+    io_threads: options[:'io-threads'],
+    max_sockets: options[:'max-sockets'],
+  })
+rescue Interrupt
+end
+
